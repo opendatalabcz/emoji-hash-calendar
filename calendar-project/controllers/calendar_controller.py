@@ -73,14 +73,15 @@ def transform_calendar():
         input_stream = BytesIO(resp.content)
 
         # Transform
-        output_stream = service.transform_calendar_stream(input_stream, method, user_mapping)
+        output_stream, preview = service.transform_calendar_stream(input_stream, method, user_mapping)
 
         output_stream.seek(0)
         output_base64 = base64.b64encode(output_stream.read()).decode("utf-8")
 
         return jsonify({
             "message": "Transformation complete",
-            "ics_base64": output_base64
+            "ics_base64": output_base64,
+            "preview": preview[:10]
         }), 200
 
     except Exception as e:

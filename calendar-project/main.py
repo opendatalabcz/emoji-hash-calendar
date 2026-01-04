@@ -1,6 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask
 from flasgger import Swagger
 from controllers.calendar_controller import calendar_bp
+from flask_cors import CORS
+
 
 # TODO - test for non all day events      ✔️
 # TODO - fix why it adds extra day to end  ✔️
@@ -33,6 +35,7 @@ from controllers.calendar_controller import calendar_bp
 
 
 app = Flask(__name__)
+CORS(app)
 swagger = Swagger(app)
 
 app.register_blueprint(calendar_bp, url_prefix="/calendar")
