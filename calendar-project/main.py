@@ -14,11 +14,11 @@ from flask_cors import CORS
 # TODO - add other transformers_class
 # TODO - embedding method
 
-# TODO - add user defined mapping
+# TODO - add user defined mapping ✔️
 # TODO - different languages
 
-# TODO - frontend website
-# TODO - add box for users to try sentence -> emoji before actual transformation
+# TODO - frontend website ✔️
+# TODO - add box for users to try sentence -> emoji before actual transformation ✔️
 
 # TODO - return .ics to be downloadable
 

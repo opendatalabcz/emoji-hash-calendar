@@ -171,7 +171,8 @@ function App() {
 
                         <select value={method} onChange={(e) => setMethod(e.target.value)}>
                             <option value="dictionary">Dictionary</option>
-                            <option value="embedding">Embedding</option>
+                            <option value="embedding - all-MiniLM-L6-v2">Embedding - all-MiniLM-L6-v2</option>
+                            <option value="embedding - all-MiniLM-L12-v2">Embedding - all-MiniLM-L12-v2</option>
                         </select>
 
                         <button>Transform</button>
@@ -219,7 +220,8 @@ function App() {
 
                         <select value={testerMethod} onChange={(e) => setTesterMethod(e.target.value)}>
                             <option value="dictionary">Dictionary</option>
-                            <option value="embedding">Embedding</option>
+                            <option value="embedding - all-MiniLM-L6-v2">Embedding - all-MiniLM-L6-v2</option>
+                            <option value="embedding - all-MiniLM-L12-v2">Embedding - all-MiniLM-L12-v2</option>
                         </select>
 
                         <button>Transform</button>

@@ -2,8 +2,8 @@ from sentence_transformers import SentenceTransformer, util
 from transformers_class.emoji_transformer import EmojiTransformer
 
 class EmbeddingTransformer(EmojiTransformer):
-    def __init__(self, emoji_dict: dict):
-        self.model = SentenceTransformer("all-MiniLM-L6-v2")
+    def __init__(self, emoji_dict: dict, model: str):
+        self.model = SentenceTransformer(model)
 
         self.emoji_dict = emoji_dict
 

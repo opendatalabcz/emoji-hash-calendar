@@ -58,8 +58,8 @@ def transform_calendar():
         if not ics_url or not method:
             return jsonify({"error": "ics_url and method are required"}), 400
 
-        if method not in ["dictionary", "embedding"]:
-            return jsonify({"error": f"Invalid method: {method}"}), 400
+        #if method not in ["dictionary", "embedding"]:
+        #    return jsonify({"error": f"Invalid method: {method}"}), 400
 
         # Donwnload
         resp = requests.get(ics_url, timeout=10)
@@ -141,8 +141,8 @@ def transform_text():
         if not text or not method:
             return jsonify({"error": "text and method are required"}), 400
 
-        if method not in ["dictionary", "embedding"]:
-            return jsonify({"error": f"Invalid method: {method}"}), 400
+        #if method not in ["dictionary", "embedding"]:
+        #    return jsonify({"error": f"Invalid method: {method}"}), 400
 
         transformed_emoji = service.transform_text_to_emoji(text, method, user_mapping)
 

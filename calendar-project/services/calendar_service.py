@@ -77,8 +77,11 @@ class CalendarService:
         if method == "dictionary":
             base_transformer = DictionaryTransformer(emoji_dict)
 
-        elif method == "embedding":
-            base_transformer = EmbeddingTransformer(emoji_dict)
+        elif method == "embedding - all-MiniLM-L6-v2":
+            base_transformer = EmbeddingTransformer(emoji_dict, "all-MiniLM-L6-v2")
+
+        elif method == "embedding - all-MiniLM-L12-v2":
+            base_transformer = EmbeddingTransformer(emoji_dict, "all-MiniLM-L12-v2")
 
         # TODO: add other transformers_class
 
