@@ -11,6 +11,10 @@ function App() {
     const [userMappings, setUserMappings] = useState([]);
     const EMOJIS = emojis.slice(0, 5000).map(e => e.char);
 
+    const [testerInput, setTesterInput] = useState("");
+    const [testerMethod, setTesterMethod] = useState("dictionary");
+    const [testerResult, setTesterResult] = useState("");
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
@@ -41,6 +45,36 @@ function App() {
             setPreview(data.preview || []);
         } catch (err) {
             setError("Backend connection failed");
+        }
+    };
+
+    const handleTesterSubmit = async (e) => {
+        e.preventDefault();
+        setTesterResult("");
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/calendar/transform-text", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    text: testerInput,
+                    method: testerMethod,
+                    user_mapping: buildUserMapping(),
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                setTesterResult("Error transforming text");
+                return;
+            }
+
+            setTesterResult(data.emoji || "");
+        } catch (err) {
+            setTesterResult("Backend connection failed");
         }
     };
 
@@ -167,6 +201,33 @@ function App() {
                                     </div>
                                 ))}
                             </div>
+                        </div>
+                    )}
+                </div>
+
+                {/* THIRD COLUMN: Text → Emoji Tester */}
+                <div className="tester-column">
+                    <h3>Text → Emoji Tester</h3>
+                    <hr />
+
+                    <form onSubmit={handleTesterSubmit} className="panel">
+                        <input
+                            placeholder="Type some text..."
+                            value={testerInput}
+                            onChange={(e) => setTesterInput(e.target.value)}
+                        />
+
+                        <select value={testerMethod} onChange={(e) => setTesterMethod(e.target.value)}>
+                            <option value="dictionary">Dictionary</option>
+                            <option value="embedding">Embedding</option>
+                        </select>
+
+                        <button>Transform</button>
+                    </form>
+
+                    {testerResult && (
+                        <div style={{ marginTop: "12px", fontSize: "24px" }}>
+                            Result: {testerResult}
                         </div>
                     )}
                 </div>

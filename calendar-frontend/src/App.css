@@ -13,7 +13,7 @@
 /* Main layout */
 .app-layout {
   display: grid;
-  grid-template-columns: 400px 1fr; /* SIDEBAR + MAIN */
+  grid-template-columns: 400px 1.5fr 350px; /* SIDEBAR + MAIN */
   gap: 60px;
   align-items: flex-start;
   max-width: 1500px;
@@ -99,6 +99,13 @@
 .preview-transformed {
   font-size: 1.05em;
   font-weight: 600;
+}
+
+.tester-column {
+  background: #f3f4f6;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
 }
 
 /* Inputs */

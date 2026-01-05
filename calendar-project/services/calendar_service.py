@@ -59,6 +59,16 @@ class CalendarService:
         output_stream.seek(0)
         return output_stream, preview
 
+    def transform_text_to_emoji(self, text: str, method: str, user_mapping: dict | None = None) -> str:
+        """
+        Convert input text into emoji(s) using the selected method.
+        - method: "dictionary" or "embedding"
+        - user_mapping: optional keyword → emoji dict
+        """
+        transformer = self._get_transformer(method, user_mapping)
+        return transformer.transform(text)
+
+
     def _get_transformer(self, method: str, user_mapping: dict | None = None):
         with open("utils/emoji_dict.json") as f:
             emoji_dict = {k.lower(): v for k, v in json.load(f).items()}
