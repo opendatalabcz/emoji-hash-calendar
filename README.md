@@ -5,4 +5,4 @@
 
 Tento software vznikl za podpory **Fakulty informačních technologií ČVUT v Praze**.
 Více informací naleznete na [fit.cvut.cz](https://fit.cvut.cz).
-Otevřený repozitář naleznete na []().
+Otevřený repozitář naleznete na [https://github.com/opendatalabcz/emoji-hash-calendar](https://github.com/opendatalabcz/emoji-hash-calendar).
