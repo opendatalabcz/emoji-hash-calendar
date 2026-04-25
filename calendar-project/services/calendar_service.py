@@ -13,6 +13,9 @@ class CalendarService:
         self.importer = importer or CalendarImporter()
         self.exporter = exporter or CalendarExporter()
 
+        with open("utils/emoji_dict.json") as f:
+            self.emoji_dict = {k.lower(): v for k, v in json.load(f).items()}
+
     """def transform_calendar(self, filepath: str, method: str, user_mapping: dict | None = None) -> str:
         # old transform using filepath not streams
         calendar = Calendar()
@@ -70,8 +73,10 @@ class CalendarService:
 
 
     def _get_transformer(self, method: str, user_mapping: dict | None = None):
-        with open("utils/emoji_dict.json") as f:
-            emoji_dict = {k.lower(): v for k, v in json.load(f).items()}
+        emoji_dict = self.emoji_dict.copy()
+
+        if user_mapping:
+            emoji_dict.update({k.lower(): v for k, v in user_mapping.items()})
 
         # Returns the correct transformer
         if method == "dictionary":
@@ -83,6 +88,15 @@ class CalendarService:
         elif method == "embedding - all-MiniLM-L12-v2":
             base_transformer = EmbeddingTransformer(emoji_dict, "all-MiniLM-L12-v2")
 
+        elif method == "embedding - balanced":
+            base_transformer = EmbeddingTransformer(emoji_dict, "all-mpnet-base-v2")
+
+        elif method == "embedding - multilingual":
+            base_transformer = EmbeddingTransformer(emoji_dict, "paraphrase-multilingual-MiniLM-L12-v2")
+
+        elif method == "embedding - bge":
+            base_transformer = EmbeddingTransformer(emoji_dict, "BAAI/bge-small-en-v1.5")
+
         # TODO: add other transformers_class
 
         # Error handling
@@ -90,7 +104,7 @@ class CalendarService:
             raise ValueError(f"Unknown transformation method: {method}")
 
         # If user mapping added
-        if user_mapping:
-            return PriorityTransformer(base_transformer, user_mapping)
+        #if user_mapping:
+        #    return PriorityTransformer(base_transformer, user_mapping)
 
         return base_transformer

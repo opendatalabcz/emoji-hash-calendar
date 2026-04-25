@@ -61,7 +61,7 @@ def transform_calendar():
         #if method not in ["dictionary", "embedding"]:
         #    return jsonify({"error": f"Invalid method: {method}"}), 400
 
-        # Donwnload
+        # Download
         resp = requests.get(ics_url, timeout=10)
         if resp.status_code != 200:
             return jsonify({"error": "Failed to download ICS file"}), 400

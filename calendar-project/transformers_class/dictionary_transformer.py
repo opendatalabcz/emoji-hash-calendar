@@ -8,15 +8,9 @@ class DictionaryTransformer(EmojiTransformer):
         pattern = r"\b(" + "|".join(escaped_words) + r")\b"
         self.regex = re.compile(pattern, re.IGNORECASE)
 
-    #def transform(self, text: str) -> str:
-    #    match = self.regex.search(text)
-    #    if match:
-    #        word = match.group(1).lower()
-    #        return self.dictionary.get(word, "❓")
-    #    return "❓"
 
     def transform(self, text: str) -> str:
-        # Find all matches
+
         matches = self.regex.findall(text)
         if not matches:
             return "❓"

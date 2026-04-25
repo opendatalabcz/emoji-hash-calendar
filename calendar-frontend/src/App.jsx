@@ -173,6 +173,9 @@ function App() {
                             <option value="dictionary">Dictionary</option>
                             <option value="embedding - all-MiniLM-L6-v2">Embedding - all-MiniLM-L6-v2</option>
                             <option value="embedding - all-MiniLM-L12-v2">Embedding - all-MiniLM-L12-v2</option>
+                            <option value="embedding - balanced">Embedding - balanced</option>
+                            <option value="embedding - multilingual">Embedding - multilingual</option>
+                            <option value="embedding - bge">Embedding - bge</option>
                         </select>
 
                         <button>Transform</button>
@@ -222,6 +225,9 @@ function App() {
                             <option value="dictionary">Dictionary</option>
                             <option value="embedding - all-MiniLM-L6-v2">Embedding - all-MiniLM-L6-v2</option>
                             <option value="embedding - all-MiniLM-L12-v2">Embedding - all-MiniLM-L12-v2</option>
+                            <option value="embedding - balanced">Embedding - balanced</option>
+                            <option value="embedding - multilingual">Embedding - multilingual</option>
+                            <option value="embedding - bge">Embedding - bge</option>
                         </select>
 
                         <button>Transform</button>
