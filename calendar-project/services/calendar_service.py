@@ -16,26 +16,6 @@ class CalendarService:
         with open("utils/emoji_dict.json") as f:
             self.emoji_dict = {k.lower(): v for k, v in json.load(f).items()}
 
-    """def transform_calendar(self, filepath: str, method: str, user_mapping: dict | None = None) -> str:
-        # old transform using filepath not streams
-        calendar = Calendar()
-        for event in self.importer.load_file(filepath):
-            calendar.add_event(event)
-
-        # Select transformation strategy
-        transformer = self._get_transformer(method, user_mapping)
-
-        # Apply transformations
-        for event in calendar.get_events():
-            event.emoji = transformer.transform(event.title)
-
-        # Export updated calendar
-        output_path = "output.ics"
-        self.exporter.export(output_path, calendar.get_events())
-
-        return output_path
-    """
-
     def transform_calendar_stream(self, input_stream: BytesIO, method: str,user_mapping: dict | None = None) -> tuple[BytesIO, list]:
         # Load calendar from stream
         calendar = Calendar()
@@ -49,7 +29,8 @@ class CalendarService:
 
         # Apply transformation
         for event in calendar.get_events():
-            event.emoji = transformer.transform(event.title)
+            emojis: list[str] = transformer.transform(event.title)
+            event.emoji = " ".join(emojis) if emojis else "?"
 
             preview.append({
                 "title_original": event.title,
@@ -69,7 +50,8 @@ class CalendarService:
         - user_mapping: optional keyword → emoji dict
         """
         transformer = self._get_transformer(method, user_mapping)
-        return transformer.transform(text)
+        emojis = transformer.transform(text)
+        return " ".join(emojis) if emojis else "?"
 
 
     def _get_transformer(self, method: str, user_mapping: dict | None = None):

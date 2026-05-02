@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./calendar-project
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./calendar-project:/app
+
+  frontend:
+    build: ./calendar-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./calendar-frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend

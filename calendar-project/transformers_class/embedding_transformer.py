@@ -1,6 +1,5 @@
 from sentence_transformers import SentenceTransformer, util
 from transformers_class.emoji_transformer import EmojiTransformer
-from torch.nn.functional import normalize
 
 class EmbeddingTransformer(EmojiTransformer):
     def __init__(self, emoji_dict: dict, model: str):
@@ -10,36 +9,36 @@ class EmbeddingTransformer(EmojiTransformer):
 
         self.phrases = list(self.emoji_dict.keys())
         self.embeddings = self.model.encode(
-            self.phrases, convert_to_tensor=True
+            self.phrases,
+            convert_to_tensor=True,
+            normalize_embeddings=True
         )
 
-    def transform(self, text: str) -> str:
-        text_embedding = self.model.encode(text, convert_to_tensor=True)
+    def transform(self, text: str) -> list[str]:
+        text_embedding = self.model.encode(
+            text,
+            convert_to_tensor=True,
+            normalize_embeddings=True
+        )
 
         scores = util.cos_sim(text_embedding, self.embeddings)[0]
-        """
-        threshold = 0.4
-        selected = []
 
-        for idx, score in enumerate(scores):
-            if float(score) >= threshold:
-                selected.append((idx, float(score)))
+        # sort ALL candidates by similarity
+        ranked_indices = scores.argsort(descending=True)
 
-        if not selected:
-            return "❓"
+        emojis = []
+        seen = set()
 
-        selected.sort(key=lambda x: x[1], reverse=True)
-        top_k = selected[:5]
+        for idx in ranked_indices:
+            emoji = self.emoji_dict[self.phrases[int(idx)]]
 
-        emojis = [self.emoji_dict[self.phrases[idx]] for idx, _ in top_k]
-        """
+            if emoji in seen:
+                continue
 
-        top_k = 3
-        top_indices = scores.topk(k=top_k).indices
+            emojis.append(emoji)
+            seen.add(emoji)
 
-        emojis = [
-            self.emoji_dict[self.phrases[idx]]
-            for idx in top_indices
-        ]
+            if len(emojis) == 3:
+                break
 
-        return " ".join(emojis)
+        return emojis

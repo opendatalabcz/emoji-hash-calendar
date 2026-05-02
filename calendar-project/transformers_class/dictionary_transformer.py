@@ -1,25 +1,48 @@
 import re
+from nltk.stem import PorterStemmer
 from transformers_class.emoji_transformer import EmojiTransformer
 
 class DictionaryTransformer(EmojiTransformer):
     def __init__(self, dictionary: dict):
-        self.dictionary = dictionary
-        escaped_words = [re.escape(word) for word in dictionary.keys()]
-        pattern = r"\b(" + "|".join(escaped_words) + r")\b"
-        self.regex = re.compile(pattern, re.IGNORECASE)
+        self.stemmer = PorterStemmer()
 
+        self.dictionary = {}
+        for k, v in dictionary.items():
+            k_lower = k.lower()
+            k_stem = " ".join(self.stemmer.stem(w) for w in k_lower.split())
 
-    def transform(self, text: str) -> str:
+            self.dictionary[k_lower] = v
+            self.dictionary[k_stem] = v
 
-        matches = self.regex.findall(text)
-        if not matches:
-            return "❓"
+    def transform(self, text: str) -> list[str]:
+        text = text.lower().replace("'", "")
+        words = re.findall(r"[^\W\d_]+", text.lower(), flags=re.UNICODE)
 
-        # Map each word to an emoji
-        emojis = [self.dictionary.get(word.lower(), "❓") for word in matches]
+        def generate_ngrams(words, n):
+            return [" ".join(words[i:i+n]) for i in range(len(words)-n+1)]
 
-        # Remove duplicates if you want
-        emojis = list(dict.fromkeys(emojis))
+        emojis = []
+        used_indices = set()
 
-        # Join into a string
-        return " ".join(emojis)
+        for n in [3, 2, 1]:
+            ngrams = generate_ngrams(words, n)
+
+            for i, phrase in enumerate(ngrams):
+                if any(idx in used_indices for idx in range(i, i+n)):
+                    continue
+
+                stemmed_phrase = " ".join(self.stemmer.stem(w) for w in phrase.split())
+
+                if phrase in self.dictionary:
+                    emoji = self.dictionary[phrase]
+                elif stemmed_phrase in self.dictionary:
+                    emoji = self.dictionary[stemmed_phrase]
+                else:
+                    continue
+
+                if emoji not in emojis:
+                    emojis.append(emoji)
+
+                used_indices.update(range(i, i+n))
+
+        return emojis
