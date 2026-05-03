@@ -34,7 +34,6 @@
   "clover": "☘️",
   "lantern": "🏮",
   "firecracker": "🧨",
-
   "meeting": "🤝",
   "standup meeting": "👥",
   "1:1 meeting": "👤",
@@ -47,7 +46,6 @@
   "chat": "💬",
   "message": "💬",
   "budget": "\uD83D\uDCB0",
-
   "work": "💼",
   "office": "🏢",
   "deadline": "⏰",
@@ -65,7 +63,6 @@
   "webinar": "🎤",
   "livestream": "📡",
   "deployment": "🚀",
-
   "friends": "🧑‍🤝‍🧑",
   "family": "👨‍👩‍👧‍👦",
   "date": "👩‍❤️‍👨",
@@ -80,7 +77,6 @@
   "anniversary": "💍",
   "breakup": "💔",
   "proposal": "💍",
-
   "doctor": "🧑‍⚕️",
   "dentist": "🦷",
   "hospital": "🏥",
@@ -88,13 +84,11 @@
   "vaccination": "💉",
   "checkup": "🩺",
   "emergency visit": "🚑",
-
   "gym": "🏋️",
   "workout": "💪",
   "yoga": "🧘",
   "run": "🏃",
   "meditation": "🧘‍♂️",
-
   "flight": "✈️",
   "travel": "🧳",
   "trip": "🧳",
@@ -107,7 +101,6 @@
   "airport": "✈️",
   "flight check-in": "🛂",
   "hotel check-out": "🚪",
-
   "breakfast": "🍳",
   "lunch": "🍱",
   "dinner": "🍽️",
@@ -115,7 +108,6 @@
   "café": "☕",
   "beer": "🍺",
   "restaurant": "👨‍🍳",
-
   "movie": "🎬",
   "cinema": "🎥",
   "music": "🎵",
@@ -123,45 +115,37 @@
   "podcast recording": "🎙️",
   "game": "🎮",
   "streaming": "📺",
-
   "shopping": "🛍️",
   "groceries": "🛒",
   "delivery": "📦",
   "invoice": "🧾",
   "payment": "💳",
   "bank": "🏦",
-
   "cleaning": "🧹",
   "laundry": "🧺",
   "repair": "🔧",
   "maintenance": "🛠️",
-
   "appointment": "📅",
   "exam": "📝",
   "homework": "📚",
   "submission deadline": "📤",
   "exam results": "📊",
-
   "phone call": "📞",
   "video call": "💻",
   "zoom call": "💻",
-
   "alarm": "⏰",
   "clock": "🕰️",
   "calendar": "📅",
-
   "sun": "☀️",
   "rain": "🌧️",
   "cloud": "☁️",
   "storm": "⛈️",
   "wind": "💨",
   "snowman": "⛄",
-
   "fire": "🔥",
   "water": "💧",
   "earth": "🌍",
   "air": "🌬️",
-
   "happy": "😀",
   "sad": "😢",
   "angry": "😠",
@@ -171,7 +155,6 @@
   "sleep": "😴",
   "surprise": "😲",
   "idea": "💡",
-
   "phone": "📱",
   "computer": "💻",
   "laptop": "💻",
@@ -179,37 +162,30 @@
   "wifi": "📶",
   "battery": "🔋",
   "light": "💡",
-
   "money": "💰",
   "credit card": "💳",
   "shopping cart": "🛒",
-
   "book": "📖",
   "pen": "🖊️",
   "pencil": "✏️",
   "school": "🏫",
   "graduation": "🎓",
   "student": "\uD83E\uDDD1\u200D\uD83C\uDF93",
-
   "car": "🚗",
   "bike": "🚲",
   "motorcycle": "🏍️",
   "traffic": "🚦",
-
   "map": "🗺️",
   "location": "📍",
   "compass": "🧭",
-
   "lightning": "⚡",
   "planet": "🪐",
   "rocket": "🚀",
   "satellite": "🛰️",
-
   "robot": "🤖",
   "alien": "👽",
   "ghost": "👻",
   "skull": "💀",
-
   "bread": "🍞",
   "pizza": "🍕",
   "burger": "🍔",
@@ -218,11 +194,9 @@
   "banana": "🍌",
   "cake": "🎂",
   "ice cream": "🍦",
-
   "football": "⚽",
   "basketball": "🏀",
   "tennis": "🎾",
-
   "cat": "\uD83D\uDC31",
   "dog": "\uD83D\uDC36",
   "scissors": "✂\uFE0F"

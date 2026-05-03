@@ -14,17 +14,17 @@ class UserService:
         return user
 
     @staticmethod
-    def create_user(name, email):
-        if not name or not email:
-            raise ValueError("Name and email required")
-        return UserRepository.create(name, email)
+    def create_user(username, password):
+        if not username or not password:
+            raise ValueError("Username and password required")
+        return UserRepository.create(username, password)
 
     @staticmethod
-    def update_user(user_id, name, email):
+    def update_user(user_id, username, password):
         user = UserRepository.get_by_id(user_id)
         if not user:
             raise ValueError("User not found")
-        return UserRepository.update(user, name, email)
+        return UserRepository.update(user, username, password)
 
     @staticmethod
     def delete_user(user_id):

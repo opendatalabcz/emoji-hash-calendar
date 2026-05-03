@@ -5,7 +5,7 @@ from flask import Blueprint, request, jsonify
 from services.calendar_service import CalendarService
 
 
-calendar_bp = Blueprint("calendar", __name__)
+calendar_bp = Blueprint("calendar", __name__, url_prefix="/api/calendars")
 service = CalendarService()
 
 @calendar_bp.route("/transformation", methods=["POST"])

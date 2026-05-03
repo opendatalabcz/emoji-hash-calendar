@@ -12,16 +12,16 @@ class UserRepository:
         return UserModel.query.filter_by(id=user_id).first()
 
     @staticmethod
-    def create(name, email):
-        user = UserModel(name=name, email=email)
+    def create(username, password):
+        user = UserModel(username=username, password=password)
         db.session.add(user)
         db.session.commit()
         return user
 
     @staticmethod
-    def update(user, name, email):
-        user.name = name
-        user.email = email
+    def update(user, username, password):
+        user.username = username
+        user.password = password
         db.session.commit()
         return user
 
