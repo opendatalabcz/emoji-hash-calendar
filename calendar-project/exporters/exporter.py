@@ -23,11 +23,9 @@ class CalendarExporter:
         ics_cal = ICSCalendar()
 
         for e in events:
-            event_name = f"{e.emoji or ''} {e.title}".strip()
+            event_name = e.emoji
             new_event = ICSEvent(
                 name=event_name,
-                location=e.location,
-                description=e.description,
                 uid=e.uid,
                 status=e.status
             )

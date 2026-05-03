@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from services.user_service import UserService
+from flask_jwt_extended import create_access_token
 
 user_bp = Blueprint("users", __name__, url_prefix="/api/users")
 
@@ -190,3 +191,50 @@ def delete_user(id):
         return {"message": "Deleted"}
     except ValueError as e:
         return {"error": str(e)}, 404
+
+@user_bp.route("/login", methods=["POST"])
+def login():
+    """
+    User login
+    ---
+    tags:
+      - Users
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - username
+            - password
+          properties:
+            username:
+              type: string
+            password:
+              type: string
+    responses:
+      200:
+        description: Login successful
+        schema:
+          properties:
+            access_token:
+              type: string
+      401:
+        description: Invalid credentials
+    """
+    data = request.get_json()
+
+    user = UserService.authenticate(
+        data.get("username"),
+        data.get("password")
+    )
+
+    if not user:
+        return {"error": "Invalid credentials"}, 401
+
+    token = create_access_token(identity=str(user.id))
+
+    return {
+        "access_token": token
+    }, 200

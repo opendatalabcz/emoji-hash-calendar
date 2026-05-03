@@ -3,6 +3,7 @@ import base64
 from io import BytesIO
 from flask import Blueprint, request, jsonify
 from services.calendar_service import CalendarService
+from services.dictionary_service import DictionaryService
 
 
 calendar_bp = Blueprint("calendar", __name__, url_prefix="/api/calendars")
@@ -31,6 +32,9 @@ def transform_calendar():
                   type: string
                   enum: ["dictionary", "embedding"]
                   description: Transformation method
+                dictionary_id:
+                  type: integer
+                  description: ID of dictionary stored in database
                 user_mapping:
                   type: object
                   description: Optional user-defined emoji mappings
@@ -53,6 +57,7 @@ def transform_calendar():
 
         ics_url = data.get("ics_url")
         method = data.get("method")
+        dictionary_id = data.get("dictionary_id")
         user_mapping = data.get("user_mapping", None)
 
         if not ics_url or not method:
@@ -72,8 +77,21 @@ def transform_calendar():
 
         input_stream = BytesIO(resp.content)
 
+        db_dict = {}
+        if dictionary_id:
+            db_dict = DictionaryService.to_dict(dictionary_id)
+
+        # Merge with user overrides (user wins)
+        final_mapping = db_dict.copy()
+        if user_mapping:
+            final_mapping.update(user_mapping)
+
         # Transform
-        output_stream, preview = service.transform_calendar_stream(input_stream, method, user_mapping)
+        output_stream, preview = service.transform_calendar_stream(
+            input_stream,
+            method,
+            final_mapping
+        )
 
         output_stream.seek(0)
         output_base64 = base64.b64encode(output_stream.read()).decode("utf-8")
@@ -91,7 +109,7 @@ def transform_calendar():
 @calendar_bp.route("/transform-text", methods=["POST"])
 def transform_text():
     """
-    Transform a piece of text into emoji(s) based on the selected method.
+    Transform text into emoji(s).
     ---
     tags:
       - Calendar
@@ -111,6 +129,8 @@ def transform_text():
               type: string
               enum: ["dictionary", "embedding"]
               description: Transformation method
+            dictionary_id:
+              type: integer
             user_mapping:
               type: object
               description: Optional user-defined emoji mappings
@@ -134,9 +154,10 @@ def transform_text():
         if not data:
             return jsonify({"error": "JSON payload required"}), 400
 
-        text = data.get("text", "")
+        text = data.get("text")
         method = data.get("method")
         user_mapping = data.get("user_mapping", {})
+        dictionary_id = data.get("dictionary_id")
 
         if not text or not method:
             return jsonify({"error": "text and method are required"}), 400
@@ -144,7 +165,15 @@ def transform_text():
         #if method not in ["dictionary", "embedding"]:
         #    return jsonify({"error": f"Invalid method: {method}"}), 400
 
-        transformed_emoji = service.transform_text_to_emoji(text, method, user_mapping)
+        db_dict = {}
+        if dictionary_id:
+            db_dict = DictionaryService.to_dict(dictionary_id)
+
+        final_mapping = db_dict.copy()
+        if user_mapping:
+            final_mapping.update(user_mapping)
+
+        transformed_emoji = service.transform_text_to_emoji(text, method, final_mapping)
 
         return jsonify({"emoji": transformed_emoji}), 200
 

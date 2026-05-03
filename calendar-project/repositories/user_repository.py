@@ -29,3 +29,7 @@ class UserRepository:
     def delete(user):
         db.session.delete(user)
         db.session.commit()
+
+    @staticmethod
+    def get_by_username(username):
+        return UserModel.query.filter_by(username=username).first()

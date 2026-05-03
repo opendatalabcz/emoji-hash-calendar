@@ -30,6 +30,7 @@ function App() {
                 body: JSON.stringify({
                     ics_url: icsUrl,
                     method: method,
+                    dictionary_id: 1,
                     user_mapping: buildUserMapping()
                 }),
             });
@@ -61,6 +62,7 @@ function App() {
                 body: JSON.stringify({
                     text: testerInput,
                     method: testerMethod,
+                    dictionary_id: 1,
                     user_mapping: buildUserMapping(),
                 }),
             });

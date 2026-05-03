@@ -32,3 +32,15 @@ class UserService:
         if not user:
             raise ValueError("User not found")
         UserRepository.delete(user)
+
+    @staticmethod
+    def authenticate(username, password):
+        user = UserRepository.get_by_username(username)
+
+        if not user:
+            return None
+
+        if user.password != password:
+            return None
+
+        return user

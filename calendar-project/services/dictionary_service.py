@@ -92,3 +92,12 @@ class DictionaryService:
             raise ValueError("Entries cannot be empty")
 
         return DictionaryRepository.bulk_insert(dictionary_id, entries_dict)
+
+    @staticmethod
+    def to_dict(dictionary_id: int) -> dict:
+        entries = DictionaryRepository.get_entries(dictionary_id)
+
+        return {
+            e.word.lower(): e.emoji
+            for e in entries
+        }
