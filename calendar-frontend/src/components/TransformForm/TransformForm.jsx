@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { transformCalendar } from "../api/calendar";
-import { buildUserMapping } from "../utils/mapping";
+import { transformCalendar } from "../../api/calendar.js";
+import { buildUserMapping } from "../../utils/mapping.js";
+import "./TransformForm.css";
 
 function TransformForm({ userMappings, setPreview, setResult }) {
     const [icsUrl, setIcsUrl] = useState("");

@@ -69,3 +69,27 @@ class MappingService:
             raise PermissionError("Not allowed to delete this mapping")
 
         MappingRepository.delete_mapping(mapping)
+
+    @staticmethod
+    def update_set(set_id, user_id, name, mappings):
+        mapping_set = MappingService._get_user_set(set_id, user_id)
+
+        if name:
+            mapping_set.name = name.strip()
+
+        # ---- replace mappings ----
+        # delete old ones
+        MappingRepository.delete_mappings_by_set(set_id)
+
+        # insert new ones
+        for m in mappings:
+            word = (m.get("word") or "").strip()
+            emoji = m.get("emoji")
+
+            if not word or not emoji:
+                continue  # or raise error if you want strict mode
+
+            MappingRepository.create_mapping(set_id, word, emoji)
+
+        MappingRepository.save(mapping_set)
+        return mapping_set

@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from services.user_service import UserService
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
-user_bp = Blueprint("users", __name__, url_prefix="/api/users")
+user_bp = Blueprint("user", __name__)
 
 @user_bp.route("/", methods=["GET"])
 def get_users():
@@ -238,6 +238,28 @@ def login():
 @user_bp.route("/me", methods=["GET"])
 @jwt_required()
 def me():
+    """
+        Get current authenticated user
+        ---
+        tags:
+          - Users
+        security:
+          - Bearer: []
+        responses:
+          200:
+            description: Current user information
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                username:
+                  type: string
+          401:
+            description: Missing or invalid JWT token
+          404:
+            description: User not found
+        """
     user_id = get_jwt_identity()
     user = UserService.get_user(user_id)
 

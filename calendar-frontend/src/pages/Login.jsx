@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { login } from "../api/users";
 import { AuthContext } from "../auth/AuthContext";
 
-function Login() {
+function Login({ onClose }) {
     const { login: setAuth } = useContext(AuthContext);
 
     const [username, setUsername] = useState("");
@@ -13,18 +13,49 @@ function Login() {
 
         try {
             const data = await login(username, password);
+
             setAuth(data.access_token);
+
+            // 👇 close modal after success
+            onClose();
         } catch (err) {
             alert(err.message);
         }
     };
 
     return (
-        <form onSubmit={handleLogin}>
-            <input value={username} onChange={(e) => setUsername(e.target.value)} />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button>Login</button>
-        </form>
+        <div className="auth-modal">
+            <form className="auth-card" onSubmit={handleLogin}>
+                <h2>Login</h2>
+
+                <input
+                    className="auth-input"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="username"
+                />
+
+                <input
+                    className="auth-input"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="password"
+                />
+
+                <button className="btn primary full">
+                    Login
+                </button>
+
+                <button
+                    type="button"
+                    className="btn link"
+                    onClick={onClose}
+                >
+                    Cancel
+                </button>
+            </form>
+        </div>
     );
 }
 

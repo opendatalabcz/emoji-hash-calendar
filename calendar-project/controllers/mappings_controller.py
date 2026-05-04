@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from services.mappings_service import MappingService
 
-mapping_bp = Blueprint("mappings", __name__, url_prefix="/api")
+mapping_bp = Blueprint("mapping", __name__)
 
 @mapping_bp.route("/sets", methods=["GET"])
 @jwt_required()
@@ -27,7 +27,7 @@ def get_sets():
                   name:
                     type: string
     """
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     sets = MappingService.get_user_sets(user_id)
 
@@ -72,7 +72,7 @@ def create_set():
           400:
             description: Invalid input
         """
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json()
 
     try:
@@ -113,7 +113,7 @@ def delete_set(set_id):
           404:
             description: Not found
         """
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     try:
         MappingService.delete_set(set_id, user_id)
@@ -155,7 +155,7 @@ def get_mappings(set_id):
           404:
             description: Not found
         """
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     try:
         mappings = MappingService.get_mappings(set_id, user_id)
@@ -216,7 +216,7 @@ def create_mapping(set_id):
           403:
             description: Not allowed
         """
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json()
 
     try:
@@ -259,7 +259,7 @@ def delete_mapping(mapping_id):
           404:
             description: Not found
         """
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     try:
         MappingService.delete_mapping(mapping_id, user_id)
@@ -267,3 +267,65 @@ def delete_mapping(mapping_id):
 
     except (ValueError, PermissionError) as e:
         return {"error": str(e)}, 403 if isinstance(e, PermissionError) else 404
+
+@mapping_bp.route("/sets/<int:set_id>", methods=["PUT"])
+@jwt_required()
+def update_set(set_id):
+    """
+    Update an entire mapping set (name + full mappings replace)
+    ---
+    tags:
+      - Mapping Sets
+    security:
+      - Bearer: []
+    parameters:
+      - name: set_id
+        in: path
+        type: integer
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - name
+            - mappings
+          properties:
+            name:
+              type: string
+            mappings:
+              type: array
+              items:
+                type: object
+                properties:
+                  word:
+                    type: string
+                  emoji:
+                    type: string
+    responses:
+      200:
+        description: Updated successfully
+      400:
+        description: Invalid input
+      403:
+        description: Not allowed
+    """
+    user_id = int(get_jwt_identity())
+    data = request.get_json()
+
+    try:
+        updated = MappingService.update_set(
+            set_id=set_id,
+            user_id=user_id,
+            name=data.get("name"),
+            mappings=data.get("mappings", [])
+        )
+
+        return {
+            "id": updated.id,
+            "name": updated.name
+        }, 200
+
+    except (ValueError, PermissionError) as e:
+        return {"error": str(e)}, 403

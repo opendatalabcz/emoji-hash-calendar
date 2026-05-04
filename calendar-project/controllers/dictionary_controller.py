@@ -3,7 +3,7 @@ from services.dictionary_service import DictionaryService
 
 from flasgger import swag_from
 
-dictionary_bp = Blueprint("dictionaries", __name__, url_prefix="/api/dictionaries")
+dictionary_bp = Blueprint("dictionary", __name__)
 
 # -------------------
 # DICTIONARY ROUTES

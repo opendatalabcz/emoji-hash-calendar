@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { transformText } from "../api/calendar";
-import { buildUserMapping } from "../utils/mapping";
+import { transformText } from "../../api/calendar.js";
+import { buildUserMapping } from "../../utils/mapping.js";
+import "./Tester.css";
 
 function Tester({ userMappings }) {
     const [testerInput, setTesterInput] = useState("");
@@ -63,7 +64,7 @@ function Tester({ userMappings }) {
             </form>
 
             {testerResult && (
-                <div style={{ marginTop: "12px", fontSize: "24px" }}>
+                <div className="tester-result">
                     Result: {testerResult}
                 </div>
             )}

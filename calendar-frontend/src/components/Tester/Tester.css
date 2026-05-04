@@ -1,0 +1,12 @@
+.tester-column {
+    background: #f3f4f6;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+/* result output */
+.tester-result {
+    margin-top: 12px;
+    font-size: 24px;
+}

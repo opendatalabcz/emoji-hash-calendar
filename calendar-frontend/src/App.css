@@ -24,44 +24,8 @@
   text-align: center;
 }
 
-/* Sidebar */
-.sidebar {
-  background: #f3f4f6;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 16px;
-}
-
-/* Rule row */
-.rule-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
-  align-items: center;
-}
-
-/* Keyword input: bigger */
-.rule-keyword {
-  flex: 2 1 100px;
-}
-
-/* Emoji select: smaller */
-.rule-emoji {
-  flex: 1 1 0;
-  text-align: center;
-  font-size: 18px;
-}
-
-
-
-/* Button: smallest */
-.rule-row button {
-  flex: 0 0 auto;
-}
-
-/* Main column */
-.main-column {
-  max-width: 640px;
+body {
+  background-color: #e6f2ff; /* soft pale blue */
 }
 
 /* Panels */
@@ -70,42 +34,6 @@
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 20px;
-}
-
-/* Preview */
-.preview-grid {
-  display: grid;
-  gap: 12px;
-  max-width: 700px;
-}
-
-.preview-card {
-  padding: 12px 16px;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-  background-color: #fafafa;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-}
-
-.preview-original {
-  opacity: 0.6;
-}
-
-.preview-arrow {
-  margin: 0 8px;
-  opacity: 0.5;
-}
-
-.preview-transformed {
-  font-size: 1.05em;
-  font-weight: 600;
-}
-
-.tester-column {
-  background: #f3f4f6;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 16px;
 }
 
 /* Inputs */
@@ -123,4 +51,123 @@ select {
 /* Buttons */
 button {
   padding: 0.6em 1.2em;
+}
+
+/* AUTH BAR */
+.auth-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 20px;
+  padding: 10px 20px;
+
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+}
+
+/* Right side button group */
+.auth-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Status text */
+.auth-status {
+  font-size: 14px;
+  color: #555;
+  margin-right: 8px;
+}
+
+/* Base button style override */
+.btn {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* Login */
+.btn.secondary {
+  background: #e9f2ff;
+  color: #1a73e8;
+}
+
+.btn.secondary:hover {
+  background: #d8e9ff;
+}
+
+/* Sign up */
+.btn.primary {
+  background: #1a73e8;
+  color: white;
+}
+
+.btn.primary:hover {
+  background: #1558b0;
+}
+
+/* Logout */
+.btn.danger {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.btn.danger:hover {
+  background: #ffcdd2;
+}
+
+/* BACKDROP */
+.auth-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CARD */
+.auth-card {
+  width: 280px;
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* INPUTS (smaller + cleaner) */
+.auth-input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+
+  font-size: 14px;
+}
+
+/* full width button inside card */
+.btn.full {
+  width: 100%;
+}
+
+/* cancel link button */
+.btn.link {
+  background: transparent;
+  color: #555;
+  font-size: 13px;
+  padding: 5px;
+}
+
+.btn.link:hover {
+  text-decoration: underline;
 }

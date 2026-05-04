@@ -6,7 +6,7 @@ from services.calendar_service import CalendarService
 from services.dictionary_service import DictionaryService
 
 
-calendar_bp = Blueprint("calendar", __name__, url_prefix="/api/calendars")
+calendar_bp = Blueprint("calendar", __name__)
 service = CalendarService()
 
 @calendar_bp.route("/transformation", methods=["POST"])

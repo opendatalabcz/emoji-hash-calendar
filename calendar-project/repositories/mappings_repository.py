@@ -58,3 +58,13 @@ class MappingRepository:
     def delete_mapping(mapping):
         db.session.delete(mapping)
         db.session.commit()
+
+    @staticmethod
+    def delete_mappings_by_set(set_id):
+        Mapping.query.filter_by(mapping_set_id=set_id).delete()
+        db.session.commit()
+
+    @staticmethod
+    def save(obj):
+        db.session.add(obj)
+        db.session.commit()

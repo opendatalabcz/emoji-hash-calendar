@@ -34,10 +34,10 @@ with app.app_context():
     db.create_all()
 
 #register blueprints
-app.register_blueprint(calendar_bp, url_prefix="/calendar")
-app.register_blueprint(user_bp, url_prefix="/user")
-app.register_blueprint(dictionary_bp, url_prefix="/dictionary")
-app.register_blueprint(mapping_bp, url_prefix="/mapping")
+app.register_blueprint(calendar_bp, url_prefix="/api/calendars")
+app.register_blueprint(user_bp, url_prefix="/api/users")
+app.register_blueprint(dictionary_bp, url_prefix="/api/dictionaries")
+app.register_blueprint(mapping_bp, url_prefix="/api/mappings")
 
 @app.route("/")
 def home():

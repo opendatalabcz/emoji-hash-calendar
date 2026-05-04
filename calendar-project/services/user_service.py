@@ -16,6 +16,9 @@ class UserService:
 
     @staticmethod
     def create_user(username, password):
+        username = username.strip() if username else None
+        password = password.strip() if password else None
+
         if not username or not password:
             raise ValueError("Username and password required")
 

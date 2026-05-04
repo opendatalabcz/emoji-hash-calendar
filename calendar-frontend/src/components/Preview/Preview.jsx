@@ -1,3 +1,5 @@
+import "./Preview.css";
+
 function Preview({ preview }) {
     if (!preview || preview.length === 0) {
         return null;
