@@ -10,4 +10,4 @@ class Dictionary(db.Model):
     description = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
-    entries = db.relationship("DictionaryEntry", backref="dictionary", lazy=True)
+    entries = db.relationship("DictionaryEntry", backref="dictionary", lazy=True, cascade="all, delete-orphan", passive_deletes=True)

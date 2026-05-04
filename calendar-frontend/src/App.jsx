@@ -1,84 +1,19 @@
-import { useState } from "react";
+import {useContext, useState} from "react";
+import RuleSidebar from "./components/RuleSidebar";
+import Tester from "./components/Tester";
+import Preview from "./components/Preview";
+import TransformForm from "./components/TransformForm.jsx";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import { AuthContext } from "./auth/AuthContext";
 import './App.css';
-import emojis from "emoji.json";
 
 function App() {
-    const [icsUrl, setIcsUrl] = useState("");
-    const [method, setMethod] = useState("dictionary");
+    const { isLoggedIn, logout } = useContext(AuthContext);
+
     const [result, setResult] = useState(null);
-    const [error, setError] = useState("");
     const [preview, setPreview] = useState([]);
     const [userMappings, setUserMappings] = useState([]);
-    const EMOJIS = emojis.slice(0, 5000).map(e => e.char);
-
-    const [testerInput, setTesterInput] = useState("");
-    const [testerMethod, setTesterMethod] = useState("dictionary");
-    const [testerResult, setTesterResult] = useState("");
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError("");
-        setResult(null);
-        setPreview([]);
-
-        try {
-            const response = await fetch("http://127.0.0.1:5000/calendar/transformation", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    ics_url: icsUrl,
-                    method: method,
-                    dictionary_id: 1,
-                    user_mapping: buildUserMapping()
-                }),
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                setError(data.error || "Something went wrong");
-                return;
-            }
-
-            setResult(data.ics_base64);
-            setPreview(data.preview || []);
-        } catch (err) {
-            setError("Backend connection failed");
-        }
-    };
-
-    const handleTesterSubmit = async (e) => {
-        e.preventDefault();
-        setTesterResult("");
-
-        try {
-            const response = await fetch("http://127.0.0.1:5000/calendar/transform-text", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    text: testerInput,
-                    method: testerMethod,
-                    dictionary_id: 1,
-                    user_mapping: buildUserMapping(),
-                }),
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                setTesterResult("Error transforming text");
-                return;
-            }
-
-            setTesterResult(data.emoji || "");
-        } catch (err) {
-            setTesterResult("Backend connection failed");
-        }
-    };
 
     const downloadFile = () => {
         const binary = atob(result);
@@ -97,150 +32,36 @@ function App() {
         a.click();
     };
 
-    const buildUserMapping = () => {
-        const mapping = {};
-        userMappings.forEach(({ keyword, emoji }) => {
-            if (keyword && emoji) {
-                mapping[keyword.toLowerCase()] = emoji;
-            }
-        });
-        return mapping;
-    };
-
     return (
         <div className="app-container">
             <h1 className="app-title">Calendar Transformer</h1>
 
             <div className="app-layout">
                 {/* SIDEBAR */}
-                <div className="sidebar">
-                    <h3>User-defined rules</h3>
-                    <hr />
-
-                    {userMappings.map((m, i) => (
-                        <div key={i} className="rule-row">
-                            <input
-                                className="rule-keyword"
-                                placeholder="keyword"
-                                value={m.keyword}
-                                onChange={(e) => {
-                                    const copy = [...userMappings];
-                                    copy[i].keyword = e.target.value;
-                                    setUserMappings(copy);
-                                }}
-                            />
-
-                            <select
-                                className="rule-emoji"
-                                value={m.emoji}
-                                onChange={(e) => {
-                                    const copy = [...userMappings];
-                                    copy[i].emoji = e.target.value;
-                                    setUserMappings(copy);
-                                }}
-                            >
-                                <option value="">😀</option>
-                                {EMOJIS.map((emoji) => (
-                                    <option key={emoji} value={emoji}>
-                                        {emoji}
-                                    </option>
-                                ))}
-                            </select>
-
-                            <button onClick={() =>
-                                setUserMappings(userMappings.filter((_, idx) => idx !== i))
-                            }>
-                                ✕
-                            </button>
-                        </div>
-                    ))}
-
-                    <button onClick={() =>
-                        setUserMappings([...userMappings, { keyword: "", emoji: "" }])
-                    }>
-                        ➕ Add rule
-                    </button>
-                </div>
-
+                <RuleSidebar
+                    userMappings={userMappings}
+                    setUserMappings={setUserMappings}
+                />
                 {/* MAIN */}
-                <div className="main-column">
-                    <form onSubmit={handleSubmit} className="panel">
-                        <input
-                            placeholder="Paste ICS URL here"
-                            value={icsUrl}
-                            onChange={(e) => setIcsUrl(e.target.value)}
-                        />
+                <div>
+                    <TransformForm
+                        userMappings={userMappings}
+                        setPreview={setPreview}
+                        setResult={setResult}
+                    />
 
-                        <select value={method} onChange={(e) => setMethod(e.target.value)}>
-                            <option value="dictionary">Dictionary</option>
-                            <option value="embedding - all-MiniLM-L6-v2">Embedding - all-MiniLM-L6-v2</option>
-                            <option value="embedding - all-MiniLM-L12-v2">Embedding - all-MiniLM-L12-v2</option>
-                            <option value="embedding - balanced">Embedding - balanced</option>
-                            <option value="embedding - multilingual">Embedding - multilingual</option>
-                            <option value="embedding - bge">Embedding - bge</option>
-                        </select>
-
-                        <button>Transform</button>
-                    </form>
+                    <Preview preview={preview} />
 
                     {result && (
-                        <button
-                            onClick={downloadFile}
-                            style={{ marginTop: "12px" }}
-                        >
-                            ⬇ Download .ics
+                        <button onClick={downloadFile}>
+                            Download .ics
                         </button>
                     )}
-
-                    {preview.length > 0 && (
-                        <div style={{ marginTop: "30px" }}>
-                            <h3>Preview (first {preview.length} events)</h3>
-
-                            <div className="preview-grid">
-                                {preview.map((e, i) => (
-                                    <div key={i} className="preview-card">
-                                        <span className="preview-original">{e.title_original}</span>
-                                        <span className="preview-arrow">→</span>
-                                        <span className="preview-transformed">
-                                            {e.title_transformed}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
                 </div>
 
-                {/* THIRD COLUMN: Text → Emoji Tester */}
-                <div className="tester-column">
-                    <h3>Text → Emoji Tester</h3>
-                    <hr />
 
-                    <form onSubmit={handleTesterSubmit} className="panel">
-                        <input
-                            placeholder="Type some text..."
-                            value={testerInput}
-                            onChange={(e) => setTesterInput(e.target.value)}
-                        />
-
-                        <select value={testerMethod} onChange={(e) => setTesterMethod(e.target.value)}>
-                            <option value="dictionary">Dictionary</option>
-                            <option value="embedding - all-MiniLM-L6-v2">Embedding - all-MiniLM-L6-v2</option>
-                            <option value="embedding - all-MiniLM-L12-v2">Embedding - all-MiniLM-L12-v2</option>
-                            <option value="embedding - balanced">Embedding - balanced</option>
-                            <option value="embedding - multilingual">Embedding - multilingual</option>
-                            <option value="embedding - bge">Embedding - bge</option>
-                        </select>
-
-                        <button>Transform</button>
-                    </form>
-
-                    {testerResult && (
-                        <div style={{ marginTop: "12px", fontSize: "24px" }}>
-                            Result: {testerResult}
-                        </div>
-                    )}
-                </div>
+                {/* Text → Emoji Tester */}
+                <Tester userMappings={userMappings} />
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from services.user_service import UserService
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 user_bp = Blueprint("users", __name__, url_prefix="/api/users")
 
@@ -22,12 +22,10 @@ def get_users():
                     type: integer
                   username:
                     type: string
-                  password:
-                    type: string
         """
     users = UserService.get_users()
     return jsonify([
-        {"id": u.id, "username": u.username, "password": u.password}
+        {"id": u.id, "username": u.username}
         for u in users
     ])
 
@@ -62,7 +60,7 @@ def create_user():
                   type: integer
                 username:
                   type: string
-                password:
+                access_token:
                   type: string
           400:
             description: Invalid input
@@ -70,10 +68,12 @@ def create_user():
     data = request.get_json()
     try:
         user = UserService.create_user(data.get("username"), data.get("password"))
+        token = create_access_token(identity=str(user.id))
+
         return {
             "id": user.id,
             "username": user.username,
-            "password": user.password
+            "access_token": token
         }, 201
     except ValueError as e:
         return {"error": str(e)}, 400
@@ -100,8 +100,6 @@ def get_user(id):
                   type: integer
                 username:
                   type: string
-                password:
-                  type: string
           404:
             description: User not found
         """
@@ -109,8 +107,7 @@ def get_user(id):
         user = UserService.get_user(id)
         return {
             "id": user.id,
-            "username": user.username,
-            "password": user.password
+            "username": user.username
         }
     except ValueError as e:
         return {"error": str(e)}, 404
@@ -157,8 +154,7 @@ def update_user(id):
         user = UserService.update_user(id, data.get("username"), data.get("password"))
         return {
             "id": user.id,
-            "username": user.username,
-            "password": user.password
+            "username": user.username
         }
     except ValueError as e:
         return {"error": str(e)}, 404
@@ -238,3 +234,14 @@ def login():
     return {
         "access_token": token
     }, 200
+
+@user_bp.route("/me", methods=["GET"])
+@jwt_required()
+def me():
+    user_id = get_jwt_identity()
+    user = UserService.get_user(user_id)
+
+    return {
+        "id": user.id,
+        "username": user.username
+    }

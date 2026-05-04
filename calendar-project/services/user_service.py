@@ -1,4 +1,5 @@
 from repositories.user_repository import UserRepository
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class UserService:
 
@@ -17,14 +18,18 @@ class UserService:
     def create_user(username, password):
         if not username or not password:
             raise ValueError("Username and password required")
-        return UserRepository.create(username, password)
+
+        hashed_password = generate_password_hash(password)
+        return UserRepository.create(username, hashed_password)
 
     @staticmethod
     def update_user(user_id, username, password):
         user = UserRepository.get_by_id(user_id)
         if not user:
             raise ValueError("User not found")
-        return UserRepository.update(user, username, password)
+
+        hashed_password = generate_password_hash(password)
+        return UserRepository.update(user, username, hashed_password)
 
     @staticmethod
     def delete_user(user_id):
@@ -40,7 +45,7 @@ class UserService:
         if not user:
             return None
 
-        if user.password != password:
+        if not check_password_hash(user.password, password):
             return None
 
         return user
