@@ -1,5 +1,6 @@
 from models.database_models.user_model import UserModel
 from db import db
+from sqlalchemy.exc import IntegrityError
 
 class UserRepository:
 
@@ -15,12 +16,15 @@ class UserRepository:
     def create(username, password):
         user = UserModel(username=username, password=password)
         db.session.add(user)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            raise ValueError("Username already taken")
         return user
 
     @staticmethod
-    def update(user, username, password):
-        user.username = username
+    def update(user, password):
         user.password = password
         db.session.commit()
         return user

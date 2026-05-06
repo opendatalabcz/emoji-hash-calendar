@@ -30,6 +30,7 @@ function App() {
         if (!isLoggedIn || !token) {
             setMappingSets([]);
             setSelectedSetId(null);
+            setUserMappings([]);
             return;
         }
 
@@ -111,10 +112,14 @@ function App() {
                 </div>
             </div>
 
-            {modal === "login" && <Login onClose={() => setModal(null)} />}
-            {modal === "signup" && <Signup onClose={() => setModal(null)} />}
+            {modal && (
+                <div className="modal-layer">
+                    {modal === "login" && <Login onClose={() => setModal(null)} />}
+                    {modal === "signup" && <Signup onClose={() => setModal(null)} />}
+                </div>
+            )}
 
-            <div className="app-layout">
+            <div className={`app-layout ${modal ? "dimmed" : ""}`}>
                 <RuleSidebar
                     userMappings={userMappings}
                     setUserMappings={setUserMappings}

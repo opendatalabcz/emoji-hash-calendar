@@ -1,5 +1,4 @@
 from repositories.mappings_repository import MappingRepository
-from models.database_models.user_mapping_model import UserMappingSet
 
 class MappingService:
 

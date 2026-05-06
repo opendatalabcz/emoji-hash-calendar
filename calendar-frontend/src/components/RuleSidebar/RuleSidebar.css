@@ -5,27 +5,79 @@
     padding: 16px;
 }
 
-/* Rule row */
+/* Row layout */
 .rule-row {
     display: flex;
     gap: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     align-items: center;
+    position: relative;
 }
 
 /* Keyword input */
 .rule-keyword {
-    flex: 2 1 100px;
+    flex: 2;
 }
 
-/* Emoji select */
+/* Emoji button */
 .rule-emoji {
-    flex: 1 1 0;
-    text-align: center;
-    font-size: 18px;
+    flex: 0 0 50px;
+    font-size: 22px;
+    cursor: pointer;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
 }
 
-/* Button inside row */
-.rule-row button {
+/* Delete button */
+.rule-row button:last-child {
     flex: 0 0 auto;
+}
+
+/* Emoji picker dropdown */
+.emoji-picker {
+    position: absolute;
+    top: 40px;
+    left: 0;
+
+    width: 100%;
+    max-width: 220px;
+
+    max-height: 220px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+
+    gap: 6px;
+    padding: 8px;
+
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Emoji options */
+.emoji-option {
+    font-size: 20px;
+    padding: 4px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    border-radius: 4px;
+}
+
+.emoji-option:hover {
+    background: #eee;
+}
+
+/* Set controls */
+.set-controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
 }

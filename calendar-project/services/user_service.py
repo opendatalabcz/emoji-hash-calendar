@@ -15,24 +15,32 @@ class UserService:
         return user
 
     @staticmethod
-    def create_user(username, password):
-        username = username.strip() if username else None
-        password = password.strip() if password else None
+    def create_user(username, password, confirm_password):
 
-        if not username or not password:
-            raise ValueError("Username and password required")
+        if password != confirm_password:
+            raise ValueError("Passwords mismatch")
+
+        existing = UserRepository.get_by_username(username)
+        if existing:
+            raise ValueError("Username already taken")
 
         hashed_password = generate_password_hash(password)
         return UserRepository.create(username, hashed_password)
 
     @staticmethod
-    def update_user(user_id, username, password):
+    def update_user(user_id, current_password, new_password, confirm_new_password):
         user = UserRepository.get_by_id(user_id)
         if not user:
             raise ValueError("User not found")
 
-        hashed_password = generate_password_hash(password)
-        return UserRepository.update(user, username, hashed_password)
+        if not check_password_hash(user.password, current_password):
+            raise ValueError("Incorrect password")
+
+        if new_password != confirm_new_password:
+            raise ValueError("Passwords mismatch")
+
+        hashed = generate_password_hash(new_password)
+        return UserRepository.update(user, hashed)
 
     @staticmethod
     def delete_user(user_id):
@@ -43,6 +51,12 @@ class UserService:
 
     @staticmethod
     def authenticate(username, password):
+        username = username.strip().lower() if username else None
+        password = password.strip() if password else None
+
+        if not username or not password:
+            return None
+
         user = UserRepository.get_by_username(username)
 
         if not user:

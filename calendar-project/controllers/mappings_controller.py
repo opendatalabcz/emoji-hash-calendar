@@ -328,4 +328,4 @@ def update_set(set_id):
         }, 200
 
     except (ValueError, PermissionError) as e:
-        return {"error": str(e)}, 403
+        return {"error": str(e)}, 403 if isinstance(e, PermissionError) else 400

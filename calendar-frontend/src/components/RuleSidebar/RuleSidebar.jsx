@@ -13,7 +13,9 @@ function RuleSidebar({
                          saveSet,
                          isLoggedIn
                      }) {
-    const EMOJIS = emojis.slice(0, 2000).map(e => e.char);
+    const EMOJIS = emojis.slice(0, 5000).map(e => e.char);
+
+    const [openPickerIndex, setOpenPickerIndex] = useState(null);
 
     const addRule = () => {
         setUserMappings([...userMappings, { keyword: "", emoji: "" }]);
@@ -30,16 +32,14 @@ function RuleSidebar({
     };
 
     const handleLoad = async () => {
-        if (!selectedSetId) return;
-
         const data = await loadSet(selectedSetId);
 
-        const mapped = data.map(m => ({
-            keyword: m.word,
-            emoji: m.emoji
-        }));
-
-        setUserMappings(mapped);
+        setUserMappings(
+            data.map(m => ({
+                keyword: m.word,
+                emoji: m.emoji
+            }))
+        );
     };
 
     const handleSave = async () => {
@@ -54,8 +54,6 @@ function RuleSidebar({
                 name = input.trim();
 
                 const newSet = await createSet(name);
-                if (!newSet) throw new Error("Failed to create set");
-
                 setId = newSet.id;
                 setSelectedSetId(newSet.id);
             } else {
@@ -65,23 +63,26 @@ function RuleSidebar({
 
             await saveSet(setId, {
                 name,
-                mappings: userMappings
+                mappings: userMappings.map(m => ({
+                    word: m.keyword,
+                    emoji: m.emoji
+                }))
             });
 
-            alert("Saved successfully ✅");
-
+            alert("Saved successfully 🎉");
         } catch (err) {
             console.error(err);
-            alert(err.message || "Save failed ❌");
+            alert(err.message || "Save failed");
         }
     };
+
     return (
         <div className="sidebar">
             {isLoggedIn && (
                 <>
                     <h3>Mapping Sets</h3>
 
-                    <div style={{ display: "flex", gap: "8px", marginBottom: "10px" }}>
+                    <div className="set-controls">
                         <select
                             value={selectedSetId ?? ""}
                             onChange={(e) =>
@@ -111,8 +112,9 @@ function RuleSidebar({
             <h3>Rules</h3>
 
             {userMappings.map((m, i) => (
-                <div key={i}>
+                <div className="rule-row" key={i}>
                     <input
+                        className="rule-keyword"
                         placeholder="keyword"
                         value={m.keyword}
                         onChange={(e) =>
@@ -120,21 +122,35 @@ function RuleSidebar({
                         }
                     />
 
-                    <select
-                        value={m.emoji}
-                        onChange={(e) =>
-                            updateRule(i, "emoji", e.target.value)
+                    {/* Emoji button */}
+                    <button
+                        className="rule-emoji"
+                        onClick={() =>
+                            setOpenPickerIndex(openPickerIndex === i ? null : i)
                         }
                     >
-                        <option value="">?</option>
-                        {EMOJIS.map((emoji) => (
-                            <option key={emoji} value={emoji}>
-                                {emoji}
-                            </option>
-                        ))}
-                    </select>
+                        {m.emoji || "➕"}
+                    </button>
 
                     <button onClick={() => removeRule(i)}>X</button>
+
+                    {/* Emoji picker dropdown */}
+                    {openPickerIndex === i && (
+                        <div className="emoji-picker">
+                            {EMOJIS.map((emoji) => (
+                                <button
+                                    key={emoji}
+                                    className="emoji-option"
+                                    onClick={() => {
+                                        updateRule(i, "emoji", emoji);
+                                        setOpenPickerIndex(null);
+                                    }}
+                                >
+                                    {emoji}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
             ))}
 
@@ -149,12 +165,6 @@ function RuleSidebar({
                         Save set
                     </button>
                 </div>
-            )}
-
-            {!isLoggedIn && (
-                <p style={{ marginTop: 10 }}>
-                    Login to save and manage rule sets.
-                </p>
             )}
         </div>
     );
