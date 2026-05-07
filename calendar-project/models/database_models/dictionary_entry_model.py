@@ -1,4 +1,4 @@
-from db import db
+from app.extensions import db
 
 class DictionaryEntry(db.Model):
     __tablename__ = "dictionary_entries"

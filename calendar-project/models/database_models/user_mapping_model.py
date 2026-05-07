@@ -1,4 +1,4 @@
-from db import db
+from app.extensions import db
 
 class UserMappingSet(db.Model):
     __tablename__ = "user_mapping_sets"

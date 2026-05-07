@@ -1,6 +1,6 @@
 from models.database_models.dictionary_model import Dictionary
 from models.database_models.dictionary_entry_model import DictionaryEntry
-from db import db
+from app.extensions import db
 
 
 class DictionaryRepository:

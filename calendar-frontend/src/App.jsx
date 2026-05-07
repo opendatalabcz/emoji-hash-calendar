@@ -11,7 +11,7 @@ import {
     getMappingSets,
     createMappingSet,
     getMappings,
-    updateMappingSet   // ✅ IMPORTANT
+    updateMappingSet
 } from "./api/mappings";
 
 import "./App.css";
@@ -56,7 +56,7 @@ function App() {
         );
 
         setSelectedSetId(setId);
-        return data; // ✅ important for sidebar
+        return data;
     };
 
     const createSet = async (name) => {
@@ -67,7 +67,7 @@ function App() {
         setMappingSets(prev => [...prev, newSet]);
         setSelectedSetId(newSet.id);
 
-        return newSet; // ✅ FIX
+        return newSet;
     };
 
     const saveSet = async (setId, payload) => {

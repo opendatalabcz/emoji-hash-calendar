@@ -66,3 +66,20 @@ class UserUpdateSchema(Schema):
 class UserResponseSchema(Schema):
     id = fields.Int()
     username = fields.String()
+
+class LoginSchema(Schema):
+    @pre_load
+    def normalize(self, data, **kwargs):
+        if not data:
+            return data
+
+        if "username" in data and isinstance(data["username"], str):
+            data["username"] = data["username"].strip().lower()
+
+        if "password" in data and isinstance(data["password"], str):
+            data["password"] = data["password"].strip()
+
+        return data
+
+    username = fields.String(required=True)
+    password = fields.String(required=True)

@@ -1,4 +1,4 @@
-from db import db
+from app.extensions import db
 from datetime import datetime, timezone
 
 class Dictionary(db.Model):

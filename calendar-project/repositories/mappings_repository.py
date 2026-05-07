@@ -1,4 +1,4 @@
-from db import db
+from app.extensions import db
 from models.database_models.mapping_model import Mapping
 from models.database_models.user_mapping_model import UserMappingSet
 
