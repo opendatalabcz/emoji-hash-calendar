@@ -1,0 +1,19 @@
+.auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.auth-field-hint {
+    font-size: 11px;
+    color: #9ca3af;
+    padding-left: 2px;
+}
+
+.hint-error {
+    color: #dc2626;
+}
+
+.auth-input-error {
+    border-color: #fca5a5 !important;
+}
