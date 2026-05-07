@@ -1,12 +1,16 @@
-.tester-column {
-    background: #f3f4f6;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 16px;
+.tester-column form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
-/* result output */
 .tester-result {
-    margin-top: 12px;
-    font-size: 24px;
+    margin-top: 16px;
+    padding: 14px;
+
+    border-radius: 10px;
+    background: #f8fafc;
+
+    font-size: 22px;
+    font-weight: 600;
 }

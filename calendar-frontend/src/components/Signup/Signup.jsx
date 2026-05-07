@@ -1,23 +1,32 @@
 import { useContext, useState } from "react";
-import { signup } from "../api/users";
-import { AuthContext } from "../auth/AuthContext";
+import { signup } from "../../api/users";
+import { AuthContext } from "../../auth/AuthContext";
+import "./Signup.css"
 
 function Signup({ onClose }) {
     const { login } = useContext(AuthContext);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [confirm_password, setConfirmPassword] = useState("");
+
+    const [error, setError] = useState("");
 
     const handleSignup = async (e) => {
         e.preventDefault();
+        setError("");
+
+        if (password !== confirm_password) {
+            setError("Passwords do not match");
+            return;
+        }
 
         try {
-            const data = await signup(username, password);
+            const data = await signup(username, password, confirm_password);
 
-            // 🔑 auto-login after signup
             login(data.access_token);
 
-            onClose(); // close modal
+            onClose();
         } catch (err) {
             alert(err.message);
         }
@@ -43,6 +52,14 @@ function Signup({ onClose }) {
                     placeholder="password"
                 />
 
+                <input
+                    className="auth-input"
+                    type="password"
+                    value={confirm_password}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="confirm password"
+                />
+
                 <button className="btn primary full">
                     Sign up
                 </button>
@@ -54,6 +71,12 @@ function Signup({ onClose }) {
                 >
                     Cancel
                 </button>
+
+                {error && (
+                    <div className="auth-error">
+                        {error}
+                    </div>
+                )}
             </form>
         </div>
     );

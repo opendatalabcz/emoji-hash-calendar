@@ -33,6 +33,34 @@ def get_users():
     users = UserService.get_users()
     return response_many_schema.dump(users), 200
 
+@user_bp.route("/<int:id>", methods=["GET"])
+def get_user(id):
+    """
+    Get user by ID
+    ---
+    tags:
+      - Users
+    parameters:
+      - name: id
+        in: path
+        type: integer
+        required: true
+    responses:
+      200:
+        description: User found
+        schema:
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+      404:
+        description: User not found
+    """
+
+    user = UserService.get_user(id)
+    return response_schema.dump(user), 200
+
 @user_bp.route("/", methods=["POST"])
 def create_user():
     """
@@ -85,36 +113,6 @@ def create_user():
         **response_schema.dump(user),
         "access_token": token
     }, 201
-
-
-@user_bp.route("/<int:id>", methods=["GET"])
-def get_user(id):
-    """
-    Get user by ID
-    ---
-    tags:
-      - Users
-    parameters:
-      - name: id
-        in: path
-        type: integer
-        required: true
-    responses:
-      200:
-        description: User found
-        schema:
-          properties:
-            id:
-              type: integer
-            username:
-              type: string
-      404:
-        description: User not found
-    """
-
-    user = UserService.get_user(id)
-    return response_schema.dump(user), 200
-
 
 @user_bp.route("/<int:id>/password", methods=["PUT"])
 @jwt_required()

@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
-import { login } from "../api/users";
-import { AuthContext } from "../auth/AuthContext";
+import { login } from "../../api/users";
+import { AuthContext } from "../../auth/AuthContext";
+import "./Login.css"
 
 function Login({ onClose }) {
     const { login: setAuth } = useContext(AuthContext);
@@ -16,7 +17,6 @@ function Login({ onClose }) {
 
             setAuth(data.access_token);
 
-            // 👇 close modal after success
             onClose();
         } catch (err) {
             alert(err.message);

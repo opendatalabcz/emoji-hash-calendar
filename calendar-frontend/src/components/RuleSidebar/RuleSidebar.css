@@ -1,8 +1,16 @@
 .sidebar {
-    background: #f3f4f6;
+    background: #ffffff;
     border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 16px;
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h3 {
+    margin: 0 0 4px;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 /* Row layout */
@@ -22,7 +30,7 @@
 /* Emoji button */
 .rule-emoji {
     flex: 0 0 50px;
-    font-size: 22px;
+    font-size: 15px;
     cursor: pointer;
     background: white;
     border: 1px solid #ccc;
@@ -80,4 +88,44 @@
     display: flex;
     gap: 8px;
     margin-bottom: 10px;
+}
+
+.rules-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+
+.sidebar-hint {
+    font-size: 0.78rem;
+    color: #9ca3af;
+    margin: 2px 0 0;
+}
+
+.sidebar-btn {
+    width: 100%;
+    padding: 8px 14px;
+    border: 1px solid var(--border, rgba(0,0,0,0.08));
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+.sidebar-btn:hover {
+    background: #f8fafc;
+    border-color: rgba(37, 99, 235, 0.25);
+}
+
+.sidebar-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.sidebar-subheading {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 8px 0 6px;
 }

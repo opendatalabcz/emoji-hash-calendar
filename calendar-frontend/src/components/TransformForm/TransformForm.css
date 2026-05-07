@@ -2,3 +2,15 @@
 .main-column {
     max-width: 640px;
 }
+
+.main-column form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.main-column button {
+    width: 100%;
+    font-weight: 600;
+    padding: 14px;
+}

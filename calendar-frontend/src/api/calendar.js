@@ -31,3 +31,16 @@ export async function transformText(payload) {
 
     return data;
 }
+
+export async function generateCalendarLink(payload) {
+    const res = await fetch(`${API_URL}/api/calendars/calendar/link`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.error || "Request failed");
+    }
+    return data;
+}

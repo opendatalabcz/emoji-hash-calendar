@@ -57,7 +57,9 @@ function TransformForm({ userMappings, setPreview, setResult }) {
                     </option>
                 </select>
 
-                <button>Transform</button>
+                <button className="main-column button">
+                    Transform
+                </button>
             </form>
 
             {error && (
