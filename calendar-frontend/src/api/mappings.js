@@ -54,45 +54,6 @@ export async function getMappings(token, setId) {
     return data;
 }
 
-/**
- * Create mapping inside a set
- */
-export async function createMapping(token, setId, word, emoji) {
-    const res = await fetch(
-        `${API_URL}/api/mappings/sets/${setId}/mappings`,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ word, emoji }),
-        }
-    );
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Failed to create mapping");
-
-    return data;
-}
-
-/**
- * Delete mapping set
- */
-export async function deleteMappingSet(token, setId) {
-    const res = await fetch(`${API_URL}/api/mappings/sets/${setId}`, {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Failed to delete set");
-
-    return data;
-}
-
 export async function updateMappingSet(token, setId, payload) {
     const res = await fetch(`${API_URL}/api/mappings/sets/${setId}`, {
         method: "PUT",
@@ -108,3 +69,18 @@ export async function updateMappingSet(token, setId, payload) {
 
     return data;
 }
+
+export async function deleteMappingSet(token, setId) {
+    const res = await fetch(`${API_URL}/api/mappings/sets/${setId}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to delete set");
+
+    return data;
+}
+

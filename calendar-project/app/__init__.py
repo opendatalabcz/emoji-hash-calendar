@@ -4,13 +4,12 @@ from flasgger import Swagger
 
 from .extensions import db, jwt
 
-from controllers.calendar_controller import calendar_bp
-from controllers.user_controller import user_bp
-from controllers.dictionary_controller import dictionary_bp
-from controllers.mappings_controller import mapping_bp
+from app.controllers.calendar_controller import calendar_bp
+from app.controllers.user_controller import user_bp
+from app.controllers.dictionary_controller import dictionary_bp
+from app.controllers.mappings_controller import mapping_bp
 
 from app.errors import register_error_handlers
-
 
 def create_app():
 

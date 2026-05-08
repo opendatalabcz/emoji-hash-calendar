@@ -84,3 +84,6 @@ Werkzeug==3.1.8
 psycopg2-binary
 flask_jwt_extended
 marshmallow
+pytest
+pytest-flask
+pytest-mock
