@@ -22,6 +22,15 @@ class CalendarService:
         self.exporter = exporter or ICSExporter()
 
     @staticmethod
+    def _build_mapping(dictionary_id, user_mapping):
+        db_dict = DictionaryService.to_dict(dictionary_id) if dictionary_id else {}
+        final_mapping = db_dict.copy()
+        if user_mapping:
+            final_mapping.update(user_mapping)
+        return final_mapping
+
+
+    @staticmethod
     def generate_subscription_link(base_url, ics_url, method, dictionary_id, user_mapping):
         from urllib.parse import urlencode
         import json
@@ -74,13 +83,6 @@ class CalendarService:
 
         return BytesIO(resp.content)
 
-    @staticmethod
-    def _build_mapping(dictionary_id, user_mapping):
-        db_dict = DictionaryService.to_dict(dictionary_id) if dictionary_id else {}
-        final_mapping = db_dict.copy()
-        if user_mapping:
-            final_mapping.update(user_mapping)
-        return final_mapping
 
     def transform_calendar_stream(self, input_stream: BytesIO, method: str, emoji_dict: dict | None = None):
         if not input_stream:

@@ -21,8 +21,8 @@ def create_app():
     CORS(app)
 
     app.config["JWT_SECRET_KEY"] = "super-secret"  # move to env later
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///calendar_transformer.db"
-    ##app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:example@db:5432/calendar_db"
+    #app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///calendar_transformer.db"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:example@db:5432/calendar_db"
 
     # -------------------
     # Extensions init

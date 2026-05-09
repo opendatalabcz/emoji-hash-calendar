@@ -107,11 +107,19 @@ def calendar_feed():
       500:
         description: Internal server error
     """
+    ics_url = request.args.get("ics_url")
+    method = request.args.get("method")
+    dictionary_id = request.args.get("dictionary_id"),
+    user_mapping = request.args.get("user_mapping")
+
+    if not ics_url or not method:
+        return {"message": "Missing required parameters"}, 400
+
     ics_bytes = service.generate_feed(
-        request.args.get("ics_url"),
-        request.args.get("method"),
-        request.args.get("dictionary_id"),
-        request.args.get("user_mapping")
+        ics_url,
+        method,
+        dictionary_id,
+        user_mapping
     )
 
     return Response(

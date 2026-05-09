@@ -40,9 +40,6 @@ class DummyUser:
         self.is_admin = is_admin
 
 
-# -------------------------------------------------------------------
-# GET /api/users/
-# -------------------------------------------------------------------
 
 @patch("app.controllers.user_controller.UserService", spec=True)
 def test_get_users_success(mock_service, client, auth_header):
@@ -73,10 +70,6 @@ def test_get_users_admin_check_forbidden(mock_service, client, auth_header):
     response = client.get("/api/users/", headers=auth_header)
     assert response.status_code == 403
 
-
-# -------------------------------------------------------------------
-# POST /api/users/
-# -------------------------------------------------------------------
 
 @patch("app.controllers.user_controller.UserService", spec=True)
 def test_create_user_service_validation_error(mock_service, client):
@@ -111,10 +104,6 @@ def test_create_user_invalid_schema(client):
     assert response.status_code == 400
 
 
-# -------------------------------------------------------------------
-# PUT /api/users/<id>/admin
-# -------------------------------------------------------------------
-
 @patch("app.controllers.user_controller.UserService", spec=True)
 def test_set_admin_success(mock_service, client, auth_header):
     mock_service.make_admin.return_value = DummyUser(2, "bob", True)
@@ -132,10 +121,6 @@ def test_set_admin_forbidden(mock_service, client, auth_header):
     response = client.put("/api/users/2/admin", headers=auth_header)
     assert response.status_code == 403
 
-
-# -------------------------------------------------------------------
-# PUT /api/users/<id>/password
-# -------------------------------------------------------------------
 
 @patch("app.controllers.user_controller.UserService", spec=True)
 def test_update_password_success(mock_service, client, auth_header):
@@ -169,10 +154,6 @@ def test_update_password_wrong_current(mock_service, client, auth_header):
     assert response.status_code == 403
 
 
-# -------------------------------------------------------------------
-# DELETE /api/users/<id>
-# -------------------------------------------------------------------
-
 @patch("app.controllers.user_controller.UserService", spec=True)
 def test_delete_user_success(mock_service, client, auth_header):
     response = client.delete("/api/users/1", headers=auth_header)
@@ -188,10 +169,6 @@ def test_delete_user_forbidden(mock_service, client, auth_header):
     response = client.delete("/api/users/1", headers=auth_header)
     assert response.status_code == 403
 
-
-# -------------------------------------------------------------------
-# POST /api/users/login
-# -------------------------------------------------------------------
 
 @patch("app.controllers.user_controller.UserService", spec=True)
 def test_login_success(mock_service, client):
@@ -210,10 +187,6 @@ def test_login_invalid_schema(client):
     response = client.post("/api/users/login", json={"username": "duy"})
     assert response.status_code == 400
 
-
-# -------------------------------------------------------------------
-# GET /api/users/me
-# -------------------------------------------------------------------
 
 @patch("app.controllers.user_controller.UserService", spec=True)
 def test_me_success(mock_service, client, auth_header):
