@@ -9,10 +9,8 @@ def app():
     Create a Flask application configured for testing.
     Uses an in-memory SQLite database and disables CSRF.
     """
-    app = create_app()
+    app = create_app(testing=True)
 
-    app.config["TESTING"] = True
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
     app.config["JWT_SECRET_KEY"] = "test-secret-key"
     app.config["WTF_CSRF_ENABLED"] = False
 

@@ -99,7 +99,7 @@ function RuleSidebar({
                         className="collapse-btn"
                         onClick={() => setCollapsed(!collapsed)}
                     >
-                        {collapsed ? "Show" : "Hide"}
+                        {collapsed ? "+" : "-"}
                     </button>
                 )}
             </div>

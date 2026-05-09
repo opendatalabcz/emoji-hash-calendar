@@ -91,6 +91,13 @@ header {
     border-color: #fca5a5;
 }
 
+.auth-actions .btn-primary,
+.auth-actions .btn-ghost {
+    min-height: 36px;
+    line-height: 1;
+    white-space: nowrap;
+}
+
 @media (max-width: 900px) {
     .header-content {
         flex-direction: column;
@@ -104,3 +111,60 @@ header {
         width: 100%;
     }
 }
+
+.auth-user-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.admin-badge {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.admin-tools-btn {
+    padding: 7px 16px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    cursor: pointer;
+}
+
+.admin-tools-btn:hover {
+    background: #f3f4f6;
+}
+
+.admin-dropdown {
+    position: absolute;
+    right: 1.5rem;
+    top: 4.5rem;
+    width: 380px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 50;
+}
+
+@media (max-width: 700px) {
+    .admin-tools-btn {
+        display: none !important;
+    }
+}
+
+

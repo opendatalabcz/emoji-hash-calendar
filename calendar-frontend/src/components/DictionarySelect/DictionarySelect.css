@@ -1,0 +1,112 @@
+.dictionary-select {
+    width: 100%;
+}
+
+/* HEADER STEJNÝ JAKO METHODSELECT */
+.dictionary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    position: relative;
+}
+
+.dictionary-header-text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.dictionary-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+}
+
+/* POPIS POD HEADEREM – STEJNÝ STYL */
+.dictionary-description {
+    margin: 6px 0 10px 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #6b7280;
+}
+
+/* BUTTON STEJNÝ JAKO METHODSELECT */
+.dictionary-info-btn {
+    background: #e5e7eb;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dictionary-info-btn:hover {
+    background: #d1d5db;
+}
+
+/* POPOVER STEJNÝ JAKO METHODSELECT */
+.dictionary-info-box {
+    position: absolute;
+    top: 28px;
+    right: 0;
+    z-index: 20;
+
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    padding: 10px 12px;
+    border-radius: 8px;
+
+    width: 260px;
+    font-size: 13px;
+    line-height: 1.35;
+    color: #4b5563;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.dictionary-info-box p {
+    margin: 4px 0;
+}
+
+/* SELECT – STEJNÝ JAKO METHODSELECT */
+.dictionary-select select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    background: #ffffff;
+    color: #111827;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    appearance: none;
+
+    background-image:
+            linear-gradient(45deg, transparent 50%, #6b7280 50%),
+            linear-gradient(135deg, #6b7280 50%, transparent 50%);
+    background-position:
+            calc(100% - 20px) calc(50% - 3px),
+            calc(100% - 14px) calc(50% - 3px);
+    background-size: 6px 6px;
+    background-repeat: no-repeat;
+}
+
+.dictionary-select select:hover {
+    border-color: rgba(37, 99, 235, 0.35);
+}
+
+.dictionary-select select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}

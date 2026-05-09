@@ -1,4 +1,5 @@
 import pytest
+import io, json
 from app import create_app
 from app.exceptions import ForbiddenError, ValidationError, NotFoundError
 from flask_jwt_extended import create_access_token
@@ -47,15 +48,10 @@ def test_get_all_dictionaries_success(mock_service, client, auth_header):
         DummyDictionary(1, "Animals", "EN")
     ]
 
-    response = client.get("/api/dictionaries/", headers=auth_header)
+    response = client.get("/api/dictionaries/")
 
     assert response.status_code == 200
     assert response.json[0]["name"] == "Animals"
-
-
-def test_get_all_dictionaries_missing_jwt(client):
-    response = client.get("/api/dictionaries/")
-    assert response.status_code == 401
 
 
 @patch("app.controllers.dictionary_controller.DictionaryService", spec=True)
@@ -72,7 +68,7 @@ def test_get_dictionary_success(mock_service, client, auth_header):
 def test_get_dictionary_not_found(mock_service, client, auth_header):
     mock_service.get_dictionary.side_effect = NotFoundError("Not found")
 
-    response = client.get("/api/dictionaries/1", headers=auth_header)
+    response = client.get("/api/dictionaries/1")
     assert response.status_code == 404
 
 
@@ -217,13 +213,16 @@ def test_bulk_insert_success(mock_service, client, auth_header):
     assert response.json["inserted"] == 2
 
 
-def test_bulk_insert_invalid_schema(client, auth_header):
+@patch("app.controllers.dictionary_controller.DictionaryService", spec=True)
+def test_bulk_insert_invalid_schema(mock_service, client, auth_header):
+    mock_service.bulk_insert_entries.side_effect = ValidationError("Entries must be a dictionary")
+
     response = client.post(
         "/api/dictionaries/1/entries/bulk",
         json="not-a-dict",
         headers=auth_header
     )
-    assert response.status_code == 404
+    assert response.status_code == 400
 
 
 @patch("app.controllers.dictionary_controller.DictionaryService", spec=True)
@@ -235,3 +234,59 @@ def test_bulk_insert_not_found(mock_service, client, auth_header):
     }, headers=auth_header)
 
     assert response.status_code == 404
+
+
+@patch("app.controllers.calendar_controller.service", autospec=True)
+def test_transform_file_success(mock_service, client):
+    mock_service.transform_calendar_from_bytes.return_value = {
+        "preview": "OK",
+        "file": "BASE64DATA"
+    }
+
+    data = {
+        "file": (io.BytesIO(b"BEGIN:VCALENDAR..."), "test.ics"),
+        "method": "dictionary",
+        "dictionary_id": "1",
+        "user_mapping": json.dumps({"meeting": "📅"})
+    }
+
+    response = client.post(
+        "/api/calendars/transform-file",
+        data=data,
+        content_type="multipart/form-data"
+    )
+
+    assert response.status_code == 200
+    assert response.json["preview"] == "OK"
+
+    mock_service.transform_calendar_from_bytes.assert_called_once()
+
+
+def test_transform_file_missing_file(client):
+    data = {
+        "method": "dictionary"
+    }
+
+    response = client.post(
+        "/api/calendars/transform-file",
+        data=data,
+        content_type="multipart/form-data"
+    )
+
+    assert response.status_code == 400
+    assert response.json["message"] == "ICS file is required"
+
+
+def test_transform_file_missing_method(client):
+    data = {
+        "file": (io.BytesIO(b"BEGIN:VCALENDAR..."), "test.ics")
+    }
+
+    response = client.post(
+        "/api/calendars/transform-file",
+        data=data,
+        content_type="multipart/form-data"
+    )
+
+    assert response.status_code == 400
+    assert response.json["message"] == "Transformation method is required"

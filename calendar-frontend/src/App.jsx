@@ -19,9 +19,12 @@ import "./App.css";
 import SourceInput from "./components/SourceInput/SourceInput.jsx";
 import ActionButtons from "./components/ActionButtons/ActionButtons.jsx";
 import MethodSelect from "./components/MethodSelect/MethodSelect.jsx";
+import DictionarySelect from "./components/DictionarySelect/DictionarySelect.jsx";
+import AdminDictionaryPanel from "./components/AdminDictionaryPanel/AdminDictionaryPanel.jsx";
 
 function App() {
     const { isLoggedIn, logout, token, user, sessionExpired, setSessionExpired } = useContext(AuthContext);
+    const isAdmin = user?.is_admin === true;
 
     const [modal, setModal] = useState(null);
     const [result, setResult] = useState(null);
@@ -34,6 +37,12 @@ function App() {
     const [isTransforming, setIsTransforming] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 1100);
     const [showPreviewModal, setShowPreviewModal] = useState(false);
+    const [dictionaryId, setDictionaryId] = useState(null);
+    const [adminOpen, setAdminOpen] = useState(false);
+    const [dictionaryRefresh, setDictionaryRefresh] = useState(0);
+    const [sourceMode, setSourceMode] = useState("url");
+    const [icsFile, setIcsFile] = useState(null);
+
 
     useEffect(() => {
         const handler = () => setIsMobile(window.innerWidth <= 1100);
@@ -59,11 +68,10 @@ function App() {
     };
 
     useEffect(() => {
-        if (sessionExpired) {
+        if (sessionExpired && isLoggedIn) {
             setModal("login");
-            setSessionExpired(false);
         }
-    }, [sessionExpired]);
+    }, [sessionExpired, isLoggedIn]);
 
     const loadSet = async (setId) => {
         if (!setId || !token) return;
@@ -104,7 +112,14 @@ function App() {
                 logout={logout}
                 setModal={setModal}
                 user={user}
+                isAdmin={isAdmin}
+                onToggleAdmin={setAdminOpen}
             />
+            {isAdmin && adminOpen && (
+                <div className="admin-dropdown">
+                    <AdminDictionaryPanel onRefresh={() => setDictionaryRefresh(r => r + 1)} />
+                </div>
+            )}
             <section className="page-intro">
                 <p>
                     Paste your calendar's ICS URL, pick a transformation method, and hit{" "}
@@ -126,10 +141,14 @@ function App() {
                 )}
 
                 <div className={`app-layout ${modal ? "dimmed" : ""}`}>
-                    <div className="layout-left">
+                    <div className="layout-left column-left">
                         <SourceInput
                             icsUrl={icsUrl}
                             setIcsUrl={setIcsUrl}
+                            icsFile={icsFile}
+                            setIcsFile={setIcsFile}
+                            sourceMode={sourceMode}
+                            setSourceMode={setSourceMode}
                         />
                         <RuleSidebar
                             userMappings={userMappings}
@@ -144,16 +163,24 @@ function App() {
                         />
                     </div>
 
-                    <div className="layout-center">
+                    <div className="layout-center column-center">
                         <MethodSelect
                             method={method}
                             setMethod={setMethod}
                         />
+                        <DictionarySelect
+                            dictionaryId={dictionaryId}
+                            setDictionaryId={setDictionaryId}
+                            refresh={dictionaryRefresh}
+                        />
                         <ActionButtons
                             icsUrl={icsUrl}
+                            icsFile={icsFile}
+                            sourceMode={sourceMode}
                             method={method}
                             setMethod={setMethod}
                             userMappings={userMappings}
+                            dictionaryId={dictionaryId}
                             setPreview={setPreview}
                             setResult={setResult}
                             result={result}
@@ -169,15 +196,20 @@ function App() {
                             </button>
                         )}
                     </div>
-                    <div className="layout-right">
-                        <Tester
-                            userMappings={userMappings}
-                            method={method}
-                        />
-                        <Preview
-                            preview={preview}
-                            loading={isTransforming}
-                        />
+                    <div className="layout-right column-right">
+                        {!isMobile && (
+                            <>
+                                <Tester
+                                    userMappings={userMappings}
+                                    method={method}
+                                    dictionaryId={dictionaryId}
+                                />
+                                <Preview
+                                    preview={preview}
+                                    loading={isTransforming}
+                                />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

@@ -5,6 +5,8 @@ services:
       - "5000:5000"
     volumes:
       - ./calendar-project:/app
+    depends_on:
+      - db
 
   frontend:
     build: ./calendar-frontend

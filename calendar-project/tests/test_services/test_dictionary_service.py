@@ -28,33 +28,27 @@ def test_assert_admin_forbidden(mock_repo):
 
 
 @patch("app.services.dictionary_service.DictionaryRepository")
-@patch("app.services.dictionary_service.UserRepository")
-def test_get_all_dictionaries_success(mock_user_repo, mock_dict_repo):
-    mock_user_repo.get_by_id.return_value = MagicMock(is_admin=True)
+def test_get_all_dictionaries_success(mock_dict_repo):
     mock_dict_repo.get_all.return_value = ["d1", "d2"]
 
-    result = DictionaryService.get_all_dictionaries(1)
+    result = DictionaryService.get_all_dictionaries()
     assert result == ["d1", "d2"]
 
 
 @patch("app.services.dictionary_service.DictionaryRepository")
-@patch("app.services.dictionary_service.UserRepository")
-def test_get_dictionary_success(mock_user_repo, mock_dict_repo):
-    mock_user_repo.get_by_id.return_value = MagicMock(is_admin=True)
+def test_get_dictionary_success(mock_dict_repo):
     mock_dict_repo.get_by_id.return_value = "dict"
 
-    result = DictionaryService.get_dictionary(1, 10)
+    result = DictionaryService.get_dictionary(10)
     assert result == "dict"
 
 
 @patch("app.services.dictionary_service.DictionaryRepository")
-@patch("app.services.dictionary_service.UserRepository")
-def test_get_dictionary_not_found(mock_user_repo, mock_dict_repo):
-    mock_user_repo.get_by_id.return_value = MagicMock(is_admin=True)
+def test_get_dictionary_not_found(mock_dict_repo):
     mock_dict_repo.get_by_id.return_value = None
 
     with pytest.raises(NotFoundError):
-        DictionaryService.get_dictionary(1, 10)
+        DictionaryService.get_dictionary(10)
 
 
 @patch("app.services.dictionary_service.DictionaryRepository")

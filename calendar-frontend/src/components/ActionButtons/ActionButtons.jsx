@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { transformCalendar, generateCalendarLink } from "../../api/calendar.js";
+import {transformCalendar, generateCalendarLink, transformCalendarFile} from "../../api/calendar.js";
 import { buildUserMapping } from "../../utils/mapping.js";
 
 import "./ActionButtons.css";
 
 function ActionButtons({
                            icsUrl,
+                           icsFile,
+                           sourceMode,
                            method,
                            userMappings,
+                           dictionaryId,
                            setPreview,
                            setResult,
                            result,
@@ -19,8 +22,22 @@ function ActionButtons({
     const [success, setSuccess] = useState(false);
     const [feedUrl, setFeedUrl] = useState(null);
     const [copied, setCopied] = useState(false);
+    const [error, setError] = useState("");
 
     const handleTransform = async () => {
+        // --- VALIDATION ---
+        if (sourceMode === "url" && (!icsUrl || icsUrl.trim() === "")) {
+            setError("ICS URL is required");
+            return;
+        }
+
+        if (sourceMode === "file" && !icsFile) {
+            setError("ICS file is required");
+            return;
+        }
+
+        setError("");
+
         try {
             setLoading(true);
             setIsTransforming(true);
@@ -29,12 +46,25 @@ function ActionButtons({
             setResult(null);
             setFeedUrl(null);
 
-            const data = await transformCalendar({
-                ics_url: icsUrl,
-                method,
-                dictionary_id: 1,
-                user_mapping: buildUserMapping(userMappings),
-            });
+            let data;
+
+            if (sourceMode === "url") {
+                data = await transformCalendar({
+                    ics_url: icsUrl,
+                    method,
+                    dictionary_id: dictionaryId,
+                    user_mapping: buildUserMapping(userMappings),
+                });
+            }
+
+            else {
+                data = await transformCalendarFile({
+                    file: icsFile,
+                    method,
+                    dictionary_id: dictionaryId,
+                    user_mapping: buildUserMapping(userMappings),
+                });
+            }
 
             setResult(data.ics_base64);
             setPreview(data.preview || []);
@@ -42,6 +72,7 @@ function ActionButtons({
             onTransformDone?.();
 
             setTimeout(() => setSuccess(false), 2000);
+
         } catch (err) {
             alert(err.message || "Backend error");
         } finally {
@@ -112,16 +143,20 @@ function ActionButtons({
                 )}
 
             </button>
-
+            {error && (
+                <p className="ics-error">{error}</p>
+            )}
             {result && (
                 <div className="result-actions fade-in">
 
                     <button className="secondary-btn" onClick={downloadFile}>
                         ⬇ Download .ics
                     </button>
-                    <button className="secondary-btn" onClick={handleGetFeedLink}>
-                        {copied ? "✓ Copied!" : "🔗 Copy Feed Link"}
-                    </button>
+                    {result && sourceMode === "url" && (
+                        <button className="secondary-btn" onClick={handleGetFeedLink}>
+                            {copied ? "✓ Copied!" : "🔗 Copy Feed Link"}
+                        </button>
+                    )}
 
                 </div>
             )}

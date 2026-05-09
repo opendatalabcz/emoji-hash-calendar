@@ -1,4 +1,4 @@
-import pytest
+import pytest, base64
 from unittest.mock import patch, MagicMock
 from io import BytesIO
 
@@ -21,6 +21,9 @@ def test_generate_subscription_link():
     assert "dictionary_id=5" in link
     assert "user_mapping=" in link
 
+@pytest.fixture
+def service():
+    return CalendarService()
 
 @patch("app.services.calendar_service.requests.get")
 def test_download_ics_success(mock_get):
@@ -178,3 +181,64 @@ def test_generate_feed_success(mock_dict_service, mock_transform, mock_download)
     result = service.generate_feed("url", "dictionary", None, None)
 
     assert result == b"ICS_OUT"
+
+@patch.object(CalendarService, "_build_mapping")
+@patch.object(CalendarService, "transform_calendar_stream")
+def test_transform_calendar_from_bytes_success(mock_transform, mock_mapping, service):
+    # Mock mapping
+    mock_mapping.return_value = {"meeting": "📅"}
+
+    # Mock transform output
+    output_stream = BytesIO(b"ICS-DATA")
+    preview = ["Event1", "Event2", "Event3"]
+    mock_transform.return_value = (output_stream, preview)
+
+    result = service.transform_calendar_from_bytes(
+        b"BEGIN:VCALENDAR...",
+        method="dictionary",
+        dictionary_id=1,
+        user_mapping={"meeting": "📅"}
+    )
+
+    assert result["message"] == "Transformation complete"
+    assert result["preview"] == preview[:10]
+
+    expected_b64 = base64.b64encode(b"ICS-DATA").decode("utf-8")
+    assert result["ics_base64"] == expected_b64
+
+    mock_mapping.assert_called_once_with(1, {"meeting": "📅"})
+
+    mock_transform.assert_called_once()
+    args, kwargs = mock_transform.call_args
+    assert isinstance(args[0], BytesIO)
+    assert args[1] == "dictionary"
+    assert args[2] == {"meeting": "📅"}
+
+def test_transform_calendar_from_bytes_empty(service):
+    with pytest.raises(ValidationError):
+        service.transform_calendar_from_bytes(
+            b"",
+            method="dictionary",
+            dictionary_id=None,
+            user_mapping=None
+        )
+
+@patch.object(CalendarService, "_build_mapping")
+@patch.object(CalendarService, "transform_calendar_stream")
+def test_transform_calendar_preview_truncation(mock_transform, mock_mapping, service):
+    mock_mapping.return_value = {}
+
+    output_stream = BytesIO(b"ICS")
+    preview = ["a"] * 50  # long preview
+    mock_transform.return_value = (output_stream, preview)
+
+    result = service.transform_calendar_from_bytes(
+        b"BEGIN:VCALENDAR...",
+        method="dictionary",
+        dictionary_id=None,
+        user_mapping=None
+    )
+
+    assert len(result["preview"]) == 10
+    assert result["preview"] == ["a"] * 10
+

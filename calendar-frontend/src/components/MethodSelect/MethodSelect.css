@@ -58,7 +58,17 @@
 }
 
 .method-header {
-    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    position: relative;
+}
+
+.method-header-text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .method-header h3 {
@@ -77,4 +87,45 @@
     line-height: 1.45;
 
     color: #6b7280;
+}
+
+.method-info-btn {
+    background: #e5e7eb;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.method-info-btn:hover {
+    background: #d1d5db;
+}
+
+.method-info-box {
+    position: absolute;
+    top: 28px;          /* těsně pod tlačítkem */
+    right: 0;           /* zarovnat doprava */
+    z-index: 20;
+
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    padding: 10px 12px;
+    border-radius: 8px;
+
+    width: 260px;       /* decentní šířka */
+    font-size: 13px;
+    line-height: 1.35;
+    color: #4b5563;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.method-info-box p {
+    margin: 4px 0;
 }

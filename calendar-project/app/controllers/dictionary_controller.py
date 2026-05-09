@@ -15,15 +15,12 @@ dictionary_create_schema = DictionaryCreateSchema()
 entry_create_schema = DictionaryEntryCreateSchema()
 
 @dictionary_bp.route("/", methods=["GET"])
-@jwt_required()
 def get_all_dictionaries():
     """
     Get all dictionaries
     ---
     tags:
       - Dictionary
-    security:
-      - Bearer: []
     responses:
       200:
         description: List of dictionaries
@@ -45,22 +42,17 @@ def get_all_dictionaries():
       403:
         description: Forbidden
     """
-    user_id = int(get_jwt_identity())
-
-    dictionaries = DictionaryService.get_all_dictionaries(user_id)
+    dictionaries = DictionaryService.get_all_dictionaries()
     return dictionary_many_schema.dump(dictionaries), 200
 
 
 @dictionary_bp.route("/<int:dictionary_id>", methods=["GET"])
-@jwt_required()
 def get_dictionary(dictionary_id):
     """
     Get a dictionary by ID
     ---
     tags:
       - Dictionary
-    security:
-      - Bearer: []
     parameters:
       - name: dictionary_id
         in: path
@@ -77,14 +69,10 @@ def get_dictionary(dictionary_id):
             language: {type: string}
             description: {type: string}
             created_at: {type: string}
-      403:
-        description: Forbidden
       404:
         description: Dictionary not found
     """
-    user_id = int(get_jwt_identity())
-
-    dictionary = DictionaryService.get_dictionary(user_id, dictionary_id)
+    dictionary = DictionaryService.get_dictionary(dictionary_id)
     return dictionary_schema.dump(dictionary), 200
 
 @dictionary_bp.route("/", methods=["POST"])

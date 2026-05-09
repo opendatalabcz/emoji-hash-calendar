@@ -180,6 +180,69 @@ def transform_calendar():
     )
     return result, 200
 
+@calendar_bp.route("/transform-file", methods=["POST"])
+def transform_calendar_file():
+    """
+    Transform an uploaded iCal (.ics) file using emoji transformation.
+    ---
+    tags:
+      - Calendar
+    consumes:
+      - multipart/form-data
+    parameters:
+      - in: formData
+        name: file
+        type: file
+        required: true
+        description: ICS file to transform
+
+      - in: formData
+        name: method
+        type: string
+        required: true
+        enum: ["dictionary", "embedding - all-MiniLM-L6-v2", "embedding - all-MiniLM-L12-v2", "embedding - balanced", "embedding - multilingual", "embedding - bge"]
+
+      - in: formData
+        name: dictionary_id
+        type: integer
+        required: false
+
+      - in: formData
+        name: user_mapping
+        type: string
+        required: false
+        description: Optional JSON string of user-defined emoji mappings
+
+    responses:
+      200:
+        description: Transformed ICS file (base64 + preview)
+      400:
+        description: Invalid input
+      500:
+        description: Internal server error
+    """
+    uploaded = request.files.get("file")
+    if not uploaded:
+        return {"message": "ICS file is required"}, 400
+
+    method = request.form.get("method")
+    if not method:
+        return {"message": "Transformation method is required"}, 400
+
+    dictionary_id = request.form.get("dictionary_id")
+    user_mapping_raw = request.form.get("user_mapping")
+
+    import json
+    user_mapping = json.loads(user_mapping_raw) if user_mapping_raw else None
+
+    result = service.transform_calendar_from_bytes(
+        uploaded.read(),
+        method,
+        dictionary_id,
+        user_mapping
+    )
+    return result, 200
+
 
 @calendar_bp.route("/transform-text", methods=["POST"])
 def transform_text():

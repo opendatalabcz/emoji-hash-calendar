@@ -22,7 +22,12 @@ export function AuthProvider({ children }) {
         clearToken();
         setTokenState(null);
         setUser(null);
-        if (expired) setSessionExpired(true);
+
+        if (expired) {
+            setSessionExpired(true);
+        } else {
+            setSessionExpired(false);
+        }
     }, []);
 
     const fetchUser = useCallback(async (token) => {

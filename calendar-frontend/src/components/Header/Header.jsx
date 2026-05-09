@@ -1,6 +1,15 @@
 import "./Header.css";
+import {useState} from "react";
 
-function Header({ isLoggedIn, logout, setModal, user }) {
+function Header({ isLoggedIn, logout, setModal, user, isAdmin, onToggleAdmin }) {
+    const [adminOpen, setAdminOpen] = useState(false);
+
+    const toggleAdmin = () => {
+        const next = !adminOpen;
+        setAdminOpen(next);
+        onToggleAdmin(next);
+    };
+
     return (
         <header>
             <div className="header-content">
@@ -16,7 +25,7 @@ function Header({ isLoggedIn, logout, setModal, user }) {
                 <div className="auth-actions">
                     {!isLoggedIn ? (
                         <>
-                            <span className="auth-hint">Sign in to save mapping sets</span>
+                            <span className="auth-hint">Sign in to save optional mapping</span>
                             <button className="btn-ghost" onClick={() => setModal("login")}>
                                 Login
                             </button>
@@ -27,10 +36,21 @@ function Header({ isLoggedIn, logout, setModal, user }) {
                         </>
                     ) : (
                         <>
-                            <span className="auth-username">
-                                👤 {user?.username}
-                            </span>
-
+                            <div className="auth-user-block">
+                                <span className="auth-username">
+                                    👤 {user?.username}
+                                </span>
+                                {isAdmin && (
+                                    <span className="admin-badge">
+                                    👑 Admin
+                                </span>
+                                )}
+                            </div>
+                            {isAdmin && (
+                                <button className="btn-ghost admin-tools-btn" onClick={toggleAdmin}>
+                                    Admin Tools ▾
+                                </button>
+                            )}
                             <button className="btn-ghost danger" onClick={logout}>
                                 Logout
                             </button>

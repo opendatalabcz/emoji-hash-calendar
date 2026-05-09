@@ -16,13 +16,11 @@ class DictionaryService:
     # DICTIONARY METHODS
     # -------------------
     @staticmethod
-    def get_all_dictionaries(user_id):
-        DictionaryService._assert_admin(user_id)
+    def get_all_dictionaries():
         return DictionaryRepository.get_all()
 
     @staticmethod
-    def get_dictionary(user_id, dictionary_id):
-        DictionaryService._assert_admin(user_id)
+    def get_dictionary(dictionary_id):
         dictionary = DictionaryRepository.get_by_id(dictionary_id)
 
         if not dictionary:

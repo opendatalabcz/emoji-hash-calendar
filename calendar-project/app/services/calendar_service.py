@@ -23,11 +23,28 @@ class CalendarService:
 
     @staticmethod
     def _build_mapping(dictionary_id, user_mapping):
+        if user_mapping is not None and not isinstance(user_mapping, dict):
+            raise ValidationError("user_mapping must be a valid JSON object")
+
         db_dict = DictionaryService.to_dict(dictionary_id) if dictionary_id else {}
         final_mapping = db_dict.copy()
         if user_mapping:
             final_mapping.update(user_mapping)
+
         return final_mapping
+
+    @staticmethod
+    def _download_ics(url, validate_content_type=False):
+        resp = requests.get(url, timeout=10)
+        if resp.status_code != 200:
+            raise ValidationError("Failed to download ICS file")
+
+        if validate_content_type:
+            content_type = resp.headers.get("Content-Type", "").lower()
+            if "calendar" not in content_type and "octet-stream" not in content_type:
+                raise ValidationError("URL did not return a calendar file")
+
+        return BytesIO(resp.content)
 
 
     @staticmethod
@@ -66,22 +83,25 @@ class CalendarService:
             "preview": preview[:10]
         }
 
+    def transform_calendar_from_bytes(self, file_bytes: bytes, method: str, dictionary_id, user_mapping):
+        if not file_bytes:
+            raise ValidationError("Uploaded ICS file is empty")
+
+        input_stream = BytesIO(file_bytes)
+        mapping = self._build_mapping(dictionary_id, user_mapping)
+
+        output_stream, preview = self.transform_calendar_stream(input_stream, method, mapping)
+        output_stream.seek(0)
+
+        return {
+            "message": "Transformation complete",
+            "ics_base64": base64.b64encode(output_stream.read()).decode("utf-8"),
+            "preview": preview[:10]
+        }
+
     def transform_text(self, text, method, dictionary_id, user_mapping):
         mapping = self._build_mapping(dictionary_id, user_mapping)
         return self.transform_text_to_emoji(text, method, mapping)
-
-    @staticmethod
-    def _download_ics(url, validate_content_type=False):
-        resp = requests.get(url, timeout=10)
-        if resp.status_code != 200:
-            raise ValidationError("Failed to download ICS file")
-
-        if validate_content_type:
-            content_type = resp.headers.get("Content-Type", "").lower()
-            if "calendar" not in content_type and "octet-stream" not in content_type:
-                raise ValidationError("URL did not return a calendar file")
-
-        return BytesIO(resp.content)
 
 
     def transform_calendar_stream(self, input_stream: BytesIO, method: str, emoji_dict: dict | None = None):

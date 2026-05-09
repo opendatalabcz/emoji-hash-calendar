@@ -205,3 +205,18 @@
     color: #9ca3af;
     margin: 0;
 }
+
+.ics-error {
+    margin-top: 6px;
+    padding: 6px 10px;
+
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 8px;
+
+    animation: fadeIn 0.25s ease;
+}
