@@ -1,7 +1,7 @@
 import pytest
 from io import BytesIO
 from datetime import datetime
-from app.exporters.ics_exporter import ICSExporter
+from app.utilities.exporters.ics_exporter import ICSExporter
 from app.exceptions import ValidationError, AppException
 
 

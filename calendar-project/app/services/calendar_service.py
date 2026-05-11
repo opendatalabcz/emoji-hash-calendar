@@ -3,11 +3,11 @@ import base64
 from io import BytesIO
 
 from app.models.domain_models.calendar import Calendar
-from app.exporters.ics_exporter import ICSExporter
-from app.importers.ics_importer import ICSImporter
+from app.utilities.exporters.ics_exporter import ICSExporter
+from app.utilities.importers.ics_importer import ICSImporter
 
-from app.emoji_transformers.dictionary_transformer import DictionaryTransformer
-from app.emoji_transformers.embedding_transformer import EmbeddingTransformer
+from app.utilities.emoji_transformers.dictionary_transformer import DictionaryTransformer
+from app.utilities.emoji_transformers.embedding_transformer import EmbeddingTransformer
 
 from app.exceptions import ValidationError, AppException
 from app.constants import EMBEDDING_MODELS

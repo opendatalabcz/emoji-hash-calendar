@@ -1,6 +1,6 @@
 import re
 from nltk.stem import PorterStemmer
-from app.emoji_transformers.emoji_transformer import EmojiTransformer
+from app.utilities.emoji_transformers.emoji_transformer import EmojiTransformer
 
 class DictionaryTransformer(EmojiTransformer):
     def __init__(self, dictionary: dict):

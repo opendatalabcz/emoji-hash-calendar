@@ -1,5 +1,5 @@
 from sentence_transformers import SentenceTransformer, util
-from app.emoji_transformers.emoji_transformer import EmojiTransformer
+from app.utilities.emoji_transformers.emoji_transformer import EmojiTransformer
 
 class EmbeddingTransformer(EmojiTransformer):
     def __init__(self, emoji_dict: dict, model: SentenceTransformer, threshold: float = 0.6):

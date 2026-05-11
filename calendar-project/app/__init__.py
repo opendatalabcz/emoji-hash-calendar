@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flasgger import Swagger
+from dotenv import load_dotenv
 
 from .extensions import db, jwt, migrate
 
@@ -12,7 +13,7 @@ from app.controllers.mappings_controller import mapping_bp
 from app.errors import register_error_handlers
 
 def create_app(testing=False):
-
+    load_dotenv()
     app = Flask(__name__)
     if testing:
         app.config.from_object("app.config.TestConfig")

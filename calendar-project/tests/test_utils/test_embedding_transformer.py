@@ -1,5 +1,5 @@
 import torch
-from app.emoji_transformers.embedding_transformer import EmbeddingTransformer
+from app.utilities.emoji_transformers.embedding_transformer import EmbeddingTransformer
 
 
 class DummyModel:

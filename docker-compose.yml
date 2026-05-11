@@ -7,6 +7,8 @@ services:
       - ./calendar-project:/app
     depends_on:
       - db
+    env_file:
+    - ./calendar-project/.env
 
   frontend:
     build: ./calendar-frontend

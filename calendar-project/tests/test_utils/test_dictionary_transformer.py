@@ -1,4 +1,4 @@
-from app.emoji_transformers.dictionary_transformer import DictionaryTransformer
+from app.utilities.emoji_transformers.dictionary_transformer import DictionaryTransformer
 
 
 def test_single_word_match():

@@ -1,7 +1,7 @@
 import pytest
 from io import BytesIO
 from arrow import Arrow
-from app.importers.ics_importer import ICSImporter
+from app.utilities.importers.ics_importer import ICSImporter
 from app.exceptions import ValidationError
 
 
