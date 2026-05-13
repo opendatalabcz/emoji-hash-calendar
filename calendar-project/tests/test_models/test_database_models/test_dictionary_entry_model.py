@@ -5,9 +5,6 @@ from app.models.database_models.dictionary_entry_model import DictionaryEntry
 
 
 def test_create_dictionary_entry(app):
-    """
-    Ensure a DictionaryEntry can be created and linked to a Dictionary.
-    """
     with app.app_context():
         dictionary = Dictionary(name="EmojiDict", language="en")
         db.session.add(dictionary)
@@ -31,9 +28,6 @@ def test_create_dictionary_entry(app):
 
 
 def test_dictionary_entry_requires_word_and_emoji(app):
-    """
-    word and emoji are nullable=False, so missing them should fail.
-    """
     with app.app_context():
         entry = DictionaryEntry(word=None, emoji=None, dictionary_id=1)
         db.session.add(entry)
@@ -47,9 +41,6 @@ def test_dictionary_entry_requires_word_and_emoji(app):
 
 
 def test_dictionary_entry_requires_dictionary_id(app):
-    """
-    dictionary_id is nullable=False, so commit should fail if missing.
-    """
     with app.app_context():
         entry = DictionaryEntry(word="hello", emoji="👋", dictionary_id=None)
         db.session.add(entry)
@@ -63,9 +54,6 @@ def test_dictionary_entry_requires_dictionary_id(app):
 
 
 def test_dictionary_entry_backref(app):
-    """
-    Ensure the backref 'dictionary' works from DictionaryEntry -> Dictionary.
-    """
     with app.app_context():
         dictionary = Dictionary(name="TestDict", language="en")
         db.session.add(dictionary)

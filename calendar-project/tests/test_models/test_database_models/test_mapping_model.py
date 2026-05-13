@@ -6,9 +6,6 @@ from app.models.database_models.user_mapping_model import UserMappingSet
 
 
 def test_create_mapping(app):
-    """
-    Ensure a Mapping can be created and linked to a UserMappingSet.
-    """
     with app.app_context():
         user = UserModel(username="duy", password="pw")
         db.session.add(user)
@@ -32,9 +29,6 @@ def test_create_mapping(app):
 
 
 def test_mapping_requires_word_and_emoji(app):
-    """
-    word and emoji are nullable=False, so missing them should fail.
-    """
     with app.app_context():
         mapping = Mapping(word=None, emoji=None, mapping_set_id=1)
         db.session.add(mapping)
@@ -48,9 +42,6 @@ def test_mapping_requires_word_and_emoji(app):
 
 
 def test_mapping_requires_mapping_set_id(app):
-    """
-    mapping_set_id is nullable=False, so commit should fail if missing.
-    """
     with app.app_context():
         mapping = Mapping(word="hello", emoji="👋", mapping_set_id=None)
         db.session.add(mapping)
@@ -64,9 +55,6 @@ def test_mapping_requires_mapping_set_id(app):
 
 
 def test_mapping_relationship_backref(app):
-    """
-    Ensure the backref 'mapping_set' works from Mapping -> UserMappingSet.
-    """
     with app.app_context():
         user = UserModel(username="john", password="pw")
         db.session.add(user)

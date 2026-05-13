@@ -16,7 +16,12 @@ class DummyEvent:
         status="CONFIRMED",
         created=None,
         last_modified=None,
-        is_all_day=False
+        is_all_day=False,
+        rrule=None,
+        rdate=None,
+        exdate=None,
+        recurrence_id=None,
+        duration=None
     ):
         self.emoji = emoji
         self.start = start
@@ -26,6 +31,13 @@ class DummyEvent:
         self.created = created
         self.last_modified = last_modified
         self.is_all_day = is_all_day
+
+        # recurrence fields
+        self.rrule = rrule
+        self.rdate = rdate
+        self.exdate = exdate
+        self.recurrence_id = recurrence_id
+        self.duration = duration
 
 
 def test_export_stream_success():
@@ -39,7 +51,6 @@ def test_export_stream_success():
     )
 
     exporter.export_stream(output, [event])
-
     data = output.getvalue().decode("utf-8")
 
     assert "BEGIN:VEVENT" in data
@@ -64,6 +75,8 @@ def test_export_stream_all_day_event():
 
     assert "SUMMARY:🎉" in data
     assert "DTSTART;VALUE=DATE" in data
+    assert "DTEND;VALUE=DATE" not in data
+
 
 
 def test_export_stream_empty_events():
@@ -84,6 +97,7 @@ def test_export_stream_missing_emoji():
         end=datetime(2024, 1, 1, 11, 0)
     )
 
+    # FIXED: ValidationError is wrapped into AppException
     with pytest.raises(AppException):
         exporter.export_stream(output, [event])
 
@@ -98,12 +112,13 @@ def test_export_stream_serialize_failure(monkeypatch):
         end=datetime(2024, 1, 1, 11, 0)
     )
 
-    def bad_serialize_iter():
+    def bad_serialize_iter(self):
         raise RuntimeError("boom")
 
+    # FIXED: patch the instance method on ICSCalendar
     monkeypatch.setattr(
         "ics.Calendar.serialize_iter",
-        lambda self: bad_serialize_iter()
+        bad_serialize_iter
     )
 
     with pytest.raises(AppException):

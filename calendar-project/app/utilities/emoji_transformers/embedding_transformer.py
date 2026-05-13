@@ -14,6 +14,9 @@ class EmbeddingTransformer(EmojiTransformer):
         )
 
     def transform(self, text: str) -> list[str]:
+        if self.embeddings is None or len(self.embeddings) == 0:
+            return ["❓"]
+
         text_embedding = self.model.encode(
             text,
             convert_to_tensor=True,
@@ -29,7 +32,6 @@ class EmbeddingTransformer(EmojiTransformer):
             emoji = self.emoji_dict[self.phrases[int(idx)]]
             if emoji in seen:
                 continue
-            # always take the first one regardless of score
             if len(emojis) >= 2 and score < self.threshold:
                 break
             emojis.append(emoji)

@@ -109,7 +109,7 @@ def calendar_feed():
     """
     ics_url = request.args.get("ics_url")
     method = request.args.get("method")
-    dictionary_id = request.args.get("dictionary_id"),
+    dictionary_id = request.args.get("dictionary_id")
     user_mapping = request.args.get("user_mapping")
 
     if not ics_url or not method:

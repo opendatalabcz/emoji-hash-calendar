@@ -36,7 +36,12 @@ class ICSImporter:
                 status=getattr(e, "status", None),
                 created=getattr(e, "created", None),
                 last_modified=getattr(e, "last_modified", None),
-                is_all_day=e.all_day
+                is_all_day=e.all_day,
+                rrule=getattr(e, "rrule", None),
+                rdate=getattr(e, "rdate", None),
+                exdate=getattr(e, "exdate", None),
+                recurrence_id=getattr(e, "recurrence_id", None),
+                duration=getattr(e, "duration", None)
             ))
 
         if not events:

@@ -54,6 +54,21 @@ class ICSExporter:
                 new_event.begin = e.start
                 new_event.end = e.end
 
+            if e.rrule:
+                new_event.rrule = e.rrule
+
+            if e.rdate:
+                new_event.rdate = e.rdate
+
+            if e.exdate:
+                new_event.exdate = e.exdate
+
+            if e.recurrence_id:
+                new_event.recurrence_id = e.recurrence_id
+
+            if e.duration:
+                new_event.duration = e.duration
+                
             ics_cal.events.add(new_event)
 
         return ics_cal

@@ -6,9 +6,6 @@ from app.models.database_models.mapping_model import Mapping
 
 
 def test_create_user_mapping_set(app):
-    """
-    Ensure a UserMappingSet can be created and linked to a user.
-    """
     with app.app_context():
         user = UserModel(username="duy", password="pw")
         db.session.add(user)
@@ -27,9 +24,6 @@ def test_create_user_mapping_set(app):
 
 
 def test_user_mapping_set_requires_user_id(app):
-    """
-    Ensure user_id is required (nullable=False).
-    """
     with app.app_context():
         mapping_set = UserMappingSet(name="Invalid Set", user_id=None)
         db.session.add(mapping_set)
@@ -43,9 +37,6 @@ def test_user_mapping_set_requires_user_id(app):
 
 
 def test_user_mapping_set_relationship_mappings(app):
-    """
-    Ensure the relationship to Mapping works.
-    """
     with app.app_context():
         user = UserModel(username="duy", password="pw")
         db.session.add(user)
@@ -65,9 +56,6 @@ def test_user_mapping_set_relationship_mappings(app):
 
 
 def test_cascade_delete_orphan(app):
-    """
-    Ensure deleting a UserMappingSet also deletes its mappings.
-    """
     with app.app_context():
         user = UserModel(username="duy", password="pw")
         db.session.add(user)

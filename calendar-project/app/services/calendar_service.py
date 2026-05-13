@@ -121,7 +121,7 @@ class CalendarService:
         preview = []
         for event in calendar.get_events():
             emojis = transformer.transform(event.title)
-            event.emoji = " ".join(emojis) if emojis else "?"
+            event.emoji = " ".join(emojis) if emojis else "❓"
             preview.append({"title_original": event.title, "title_transformed": event.emoji})
 
         output_stream = BytesIO()
@@ -136,7 +136,7 @@ class CalendarService:
 
         transformer = self._get_transformer(method, emoji_dict)
         emojis = transformer.transform(text)
-        return " ".join(emojis) if emojis else "?"
+        return " ".join(emojis) if emojis else "❓"
 
     @classmethod
     def _get_transformer(cls, method: str, emoji_dict: dict | None = None):

@@ -4,11 +4,6 @@ from app.exceptions import ForbiddenError, ValidationError
 from flask_jwt_extended import create_access_token
 from unittest.mock import patch
 
-
-# -------------------------------------------------------------------
-# Fixtures
-# -------------------------------------------------------------------
-
 @pytest.fixture
 def app():
     app = create_app()
@@ -27,11 +22,6 @@ def auth_header(app):
     with app.app_context():
         token = create_access_token(identity="1")
     return {"Authorization": f"Bearer {token}"}
-
-
-# -------------------------------------------------------------------
-# Dummy user object for serialization
-# -------------------------------------------------------------------
 
 class DummyUser:
     def __init__(self, id, username, is_admin=False):

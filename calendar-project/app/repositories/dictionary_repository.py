@@ -55,27 +55,14 @@ class DictionaryRepository:
         db.session.delete(entry)
         db.session.commit()
 
-    # -------------------
-    # BULK INSERT (IMPORTANT)
-    # -------------------
     @staticmethod
     def bulk_insert(dictionary_id, entries_dict):
-        """
-        entries_dict = {
-            "birthday": "🎂",
-            "meeting": "📅"
-        }
-        """
-        entries = []
+        rows = [
+            {"word": word, "emoji": emoji, "dictionary_id": dictionary_id}
+            for word, emoji in entries_dict.items()
+        ]
 
-        for word, emoji in entries_dict.items():
-            entries.append(DictionaryEntry(
-                word=word,
-                emoji=emoji,
-                dictionary_id=dictionary_id
-            ))
-
-        db.session.bulk_save_objects(entries)
+        db.session.bulk_insert_mappings(DictionaryEntry, rows)
         db.session.commit()
 
-        return len(entries)
+        return len(rows)

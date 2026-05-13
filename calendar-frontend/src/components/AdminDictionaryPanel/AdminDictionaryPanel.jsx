@@ -6,9 +6,9 @@ import {
     deleteDictionary,
     bulkInsertEntries
 } from "../../api/dictionary";
-import "./AdminDictionaryPanel.css";
+import "./AdminPanel.css";
 
-function AdminDictionaryPanel( {onRefresh}) {
+function AdminPanel({onRefresh}) {
     const { token } = useContext(AuthContext);
 
     const [dictionaries, setDictionaries] = useState([]);
@@ -170,4 +170,4 @@ function AdminDictionaryPanel( {onRefresh}) {
     );
 }
 
-export default AdminDictionaryPanel;
+export default AdminPanel;

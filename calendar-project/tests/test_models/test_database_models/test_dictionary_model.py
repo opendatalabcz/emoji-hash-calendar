@@ -5,9 +5,6 @@ from app.models.database_models.dictionary_entry_model import DictionaryEntry
 
 
 def test_create_dictionary(app):
-    """
-    Ensure a Dictionary can be created and persisted.
-    """
     with app.app_context():
         dictionary = Dictionary(
             name="Emoji Dictionary",
@@ -28,9 +25,6 @@ def test_create_dictionary(app):
 
 
 def test_dictionary_name_must_be_unique(app):
-    """
-    name has unique=True, so duplicates must fail.
-    """
     with app.app_context():
         d1 = Dictionary(name="MyDict", language="en")
         d2 = Dictionary(name="MyDict", language="en")
@@ -49,9 +43,6 @@ def test_dictionary_name_must_be_unique(app):
 
 
 def test_dictionary_relationship_entries(app):
-    """
-    Relationship: Dictionary -> DictionaryEntry (one-to-many).
-    """
     with app.app_context():
         dictionary = Dictionary(name="TestDict", language="en")
         db.session.add(dictionary)
@@ -72,9 +63,6 @@ def test_dictionary_relationship_entries(app):
 
 
 def test_cascade_delete_entries(app):
-    """
-    Cascade rule: deleting a Dictionary should delete its entries.
-    """
     with app.app_context():
         dictionary = Dictionary(name="CascadeDict", language="en")
         db.session.add(dictionary)
