@@ -34,7 +34,7 @@ function AdminUserPanel() {
                     <tr>
                         <th>ID</th>
                         <th>Username</th>
-                        <th>Admin</th>
+                        <th>Role</th>
                         <th>Actions</th>
                     </tr>
                     </thead>

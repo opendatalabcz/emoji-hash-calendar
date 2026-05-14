@@ -1,5 +1,6 @@
 from datetime import timedelta
 from ics import Calendar as ICSCalendar, Event as ICSEvent
+from ics.grammar.parse import ContentLine
 from io import BytesIO
 from app.exceptions import ValidationError, AppException
 
@@ -52,23 +53,37 @@ class ICSExporter:
                 new_event.make_all_day()
             else:
                 new_event.begin = e.start
-                new_event.end = e.end
+                if e.duration:
+                    new_event.end = e.start + e.duration
+                else:
+                    new_event.end = e.end
 
             if e.rrule:
-                new_event.rrule = e.rrule
-
+                new_event.extra.append(
+                    ContentLine(name="RRULE", value=str(e.rrule))
+                )
             if e.rdate:
-                new_event.rdate = e.rdate
-
+                new_event.extra.append(
+                    ContentLine(
+                        name="RDATE",
+                        value=",".join(d.isoformat() for d in e.rdate)
+                    )
+                )
             if e.exdate:
-                new_event.exdate = e.exdate
-
+                new_event.extra.append(
+                    ContentLine(
+                        name="EXDATE",
+                        value=",".join(d.isoformat() for d in e.exdate)
+                    )
+                )
             if e.recurrence_id:
-                new_event.recurrence_id = e.recurrence_id
+                new_event.extra.append(
+                    ContentLine(
+                        name="RECURRENCE-ID",
+                        value=e.recurrence_id.isoformat()
+                    )
+                )
 
-            if e.duration:
-                new_event.duration = e.duration
-                
             ics_cal.events.add(new_event)
 
         return ics_cal

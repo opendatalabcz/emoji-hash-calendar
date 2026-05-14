@@ -28,6 +28,21 @@ class ICSImporter:
         events = []
 
         for e in ics_cal.events:
+            rrule = None
+            rdate = None
+            exdate = None
+            recurrence_id = None
+
+            for line in e.extra:
+                if line.name == "RRULE":
+                    rrule = line.value
+                elif line.name == "RDATE":
+                    rdate = line.value.split(",")
+                elif line.name == "EXDATE":
+                    exdate = line.value.split(",")
+                elif line.name == "RECURRENCE-ID":
+                    recurrence_id = line.value
+
             events.append(Event(
                 title=e.name or "Untitled",
                 start=e.begin,
@@ -37,10 +52,10 @@ class ICSImporter:
                 created=getattr(e, "created", None),
                 last_modified=getattr(e, "last_modified", None),
                 is_all_day=e.all_day,
-                rrule=getattr(e, "rrule", None),
-                rdate=getattr(e, "rdate", None),
-                exdate=getattr(e, "exdate", None),
-                recurrence_id=getattr(e, "recurrence_id", None),
+                rrule=rrule,
+                rdate=rdate,
+                exdate=exdate,
+                recurrence_id=recurrence_id,
                 duration=getattr(e, "duration", None)
             ))
 

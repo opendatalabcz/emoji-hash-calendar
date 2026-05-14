@@ -8,18 +8,22 @@ function Login({ onClose }) {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
+        if (!username || !password) {
+            setError("Username and password cannot be empty.");
+            return;
+        }
+
         try {
             const data = await login(username, password);
-
             setAuth(data.access_token);
-
             onClose();
         } catch (err) {
-            alert(err.message);
+            setError("Invalid username or password.");
         }
     };
 
@@ -42,7 +46,7 @@ function Login({ onClose }) {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="password"
                 />
-
+                {error && <div className="auth-error">{error}</div>}
                 <button className="btn primary full">
                     Login
                 </button>

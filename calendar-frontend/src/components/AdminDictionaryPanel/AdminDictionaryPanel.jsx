@@ -4,7 +4,7 @@ import {
     getDictionaries,
     createDictionary,
     deleteDictionary,
-    bulkInsertEntries
+    bulkInsertEntries, getDictionaryEntries
 } from "../../api/dictionary";
 import "./AdminDictionaryPanel.css";
 
@@ -14,9 +14,10 @@ function AdminDictionaryPanel({onRefresh}) {
     const [dictionaries, setDictionaries] = useState([]);
     const [selectedId, setSelectedId] = useState(null);
     const [newDict, setNewDict] = useState({ name: "", language: "", description: "" });
-    const [showCreate, setShowCreate] = useState(false);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [bulkData, setBulkData] = useState(JSON.stringify());
+    const [showEntriesModal, setShowEntriesModal] = useState(false);
+    const [entries, setEntries] = useState([]);
 
     useEffect(() => {
         getDictionaries().then(setDictionaries).catch(console.error);
@@ -44,10 +45,22 @@ function AdminDictionaryPanel({onRefresh}) {
         }
     };
 
+    const handleShowEntries = async () => {
+        if (!selectedId) return;
+
+        try {
+            const data = await getDictionaryEntries(token, selectedId);
+            setEntries(data);
+            setShowEntriesModal(true);
+        } catch (err) {
+            alert("Failed to load entries");
+        }
+    };
+
     return (
         <div className="admin-dictionary-panel">
             <h3>Dictionary Management</h3>
-            <p>Create and manage dictionaries</p>
+            <p>Create and manage dictionaries - insert new entries into dictionaries, view entries or delete dictionaries</p>
 
             <button
                 className="create-toggle-btn"
@@ -151,9 +164,36 @@ function AdminDictionaryPanel({onRefresh}) {
                     <button className="bulk-btn" onClick={handleBulkInsert}>
                         Bulk Insert Entries
                     </button>
+                    <button className="entries-btn" onClick={handleShowEntries}>
+                        Show Entries
+                    </button>
                     <button className="delete-btn" onClick={handleDelete}>
                         Delete Dictionary
                     </button>
+                </div>
+            )}
+            {showEntriesModal && (
+                <div className="admin-modal-overlay" onClick={() => setShowEntriesModal(false)}>
+                    <div className="admin-modal entries-modal" onClick={(e) => e.stopPropagation()}>
+                        <h2>Dictionary Entries</h2>
+
+                        <div className="entries-list">
+                            {entries.length === 0 && <p>No entries found.</p>}
+
+                            {entries.map((entry) => (
+                                <div key={entry.id} className="entry-row">
+                                    <span className="entry-key">{entry.word}</span>
+                                    <span className="entry-value">{entry.emoji}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="modal-actions">
+                            <button className="btn-cancel" onClick={() => setShowEntriesModal(false)}>
+                                Close
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
