@@ -44,7 +44,7 @@ function Signup({ onClose }) {
             login(data.access_token);
             onClose();
         } catch (err) {
-            alert(err.message);
+            setError("Username already taken");
         }
     };
 
