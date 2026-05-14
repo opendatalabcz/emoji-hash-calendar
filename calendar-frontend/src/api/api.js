@@ -23,3 +23,15 @@ export async function api(path, options = {}) {
 
     return data;
 }
+
+export async function getUsers(token) {
+    const res = await fetch(`${API_URL}/api/users/`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to fetch users");
+    return data;
+}

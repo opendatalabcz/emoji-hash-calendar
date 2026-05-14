@@ -1,4 +1,4 @@
-# calendar
+# Hashování kalendáře pomocí emoji
 
 ***
 <img src="https://fit.cvut.cz/static/images/fit-cvut-logo-cs.svg" alt="logo FIT ČVUT" height="200">

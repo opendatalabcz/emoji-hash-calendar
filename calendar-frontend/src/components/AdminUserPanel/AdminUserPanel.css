@@ -1,0 +1,96 @@
+.admin-user-panel {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-top: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.admin-user-panel h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+}
+
+.admin-user-panel p {
+    margin-top: -6px;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* Card wrapper */
+.admin-card {
+    background: #ffffff;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+/* Table */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.user-table th {
+    text-align: left;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.user-table td {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+/* Badges */
+.admin-badge {
+    background: #2563eb;
+    color: white;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.user-badge {
+    background: #e5e7eb;
+    color: #374151;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Make admin button */
+.make-admin-btn {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 0.5rem 0.9rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.make-admin-btn:hover {
+    background: #059669;
+}
+
+/* Hide on mobile (same as dictionary panel) */
+@media (max-width: 700px) {
+    .admin-user-panel {
+        display: none !important;
+    }
+}

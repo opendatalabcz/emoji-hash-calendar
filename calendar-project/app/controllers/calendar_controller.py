@@ -14,7 +14,8 @@ transform_text_schema = TransformTextSchema()
 @calendar_bp.route("/link", methods=["POST"])
 def generate_calendar_link():
     """
-    Generates a Google Calendar subscription URL for the transformed ICS feed.
+    Generates subscription URL for the transformed ICS feed.
+    Generates  link that can be used as a subscription in Google Calendar
     ---
     tags:
       - Calendar
@@ -134,6 +135,7 @@ def calendar_feed():
 def transform_calendar():
     """
     Transform an iCal (.ics) calendar to use emojis for events.
+    Takes a ICS URL and transforms the calendar, returns calendar in base64 and a preview
     ---
     tags:
       - Calendar
@@ -184,6 +186,7 @@ def transform_calendar():
 def transform_calendar_file():
     """
     Transform an uploaded iCal (.ics) file using emoji transformation.
+    Takes a file input and transforms the ICS, returns ICS in base 64 and preview
     ---
     tags:
       - Calendar
@@ -248,6 +251,7 @@ def transform_calendar_file():
 def transform_text():
     """
     Transform text into emoji(s).
+    Endpoint for testing phrases without having to transform whole calendar
     ---
     tags:
       - Calendar
@@ -301,6 +305,7 @@ def transform_text():
 def get_methods():
     """
     Get available transformation methods.
+    Returns available transformation methods
     ---
     tags:
       - Calendar

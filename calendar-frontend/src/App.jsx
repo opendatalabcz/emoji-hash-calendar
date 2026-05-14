@@ -21,6 +21,7 @@ import ActionButtons from "./components/ActionButtons/ActionButtons.jsx";
 import MethodSelect from "./components/MethodSelect/MethodSelect.jsx";
 import DictionarySelect from "./components/DictionarySelect/DictionarySelect.jsx";
 import AdminDictionaryPanel from "./components/AdminDictionaryPanel/AdminDictionaryPanel.jsx";
+import AdminUserPanel from "./components/AdminUserPanel/AdminUserPanel.jsx";
 
 function App() {
     const { isLoggedIn, logout, token, user, sessionExpired, setSessionExpired } = useContext(AuthContext);
@@ -116,7 +117,8 @@ function App() {
                 onToggleAdmin={setAdminOpen}
             />
             {isAdmin && adminOpen && (
-                <div className="admin-dropdown">
+                <div className="admin-dropdown admin-flex">
+                    <AdminUserPanel />
                     <AdminDictionaryPanel onRefresh={() => setDictionaryRefresh(r => r + 1)} />
                 </div>
             )}
@@ -127,9 +129,8 @@ function App() {
                     link to keep your calendar in sync automatically.
                 </p>
                 <p>
-                    <strong>Dictionary</strong> matches exact keywords in event titles.
-                    The embedding models (MiniLM, Balanced, etc.) use AI to find the closest
-                    emoji by meaning — better for varied or unpredictable titles.
+                    <strong>Exact Matches</strong> matches exact keywords in event titles.
+                    The embedding models find the closest emojis by meaning — better for varied or unpredictable titles.
                 </p>
             </section>
             <div className="app-container">

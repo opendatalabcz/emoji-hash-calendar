@@ -25,7 +25,6 @@ function ActionButtons({
     const [error, setError] = useState("");
 
     const handleTransform = async () => {
-        // --- VALIDATION ---
         if (sourceMode === "url" && (!icsUrl || icsUrl.trim() === "")) {
             setError("ICS URL is required");
             return;

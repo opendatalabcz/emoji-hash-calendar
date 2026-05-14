@@ -17,3 +17,35 @@
 .auth-input-error {
     border-color: #fca5a5 !important;
 }
+
+.password-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.password-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    opacity: 0.7;
+    transition: 0.2s ease;
+    pointer-events: auto;
+}
+
+.password-input-wrapper .auth-input {
+    padding-right: 40px;
+}
+
+.password-toggle:hover {
+    opacity: 1;
+}
+

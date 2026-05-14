@@ -1,69 +1,65 @@
-/* ---------------------------------------------------
-   PANEL WRAPPER
---------------------------------------------------- */
 .admin-dictionary-panel {
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
-    padding: 1rem;
+    padding: 1.25rem;
     margin-top: 1rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
 }
 
 .admin-dictionary-panel h3 {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 600;
     color: #111827;
     margin: 0;
 }
 
-/* ---------------------------------------------------
-   CREATE BUTTON
---------------------------------------------------- */
-.create-toggle-btn {
-    width: 100%;
-    padding: 0.6rem 1rem;
-    background: #f3f4f6;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.create-toggle-btn:hover {
-    background: #e5e7eb;
-}
-
-/* ---------------------------------------------------
-   SELECT BLOCK
---------------------------------------------------- */
-.dict-select-block {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-
-.dict-select-block label {
+.admin-dictionary-panel p {
+    margin-top: -6px;
     font-size: 0.85rem;
     color: #6b7280;
 }
 
-.dict-select-block select {
-    padding: 0.6rem 0.75rem;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    background: #f9fafb;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: border-color 0.2s ease, background 0.2s ease;
+.create-toggle-btn {
     width: 100%;
+    padding: 0.75rem 1rem;
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.create-toggle-btn:hover {
+    background: #e5e7eb;
+    border-color: #cbd5e1;
+}
+
+.dict-select-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.dict-select-block label {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.dict-select-block select {
+    padding: 0.7rem 0.9rem;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    background: #f9fafb;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .dict-select-block select:hover {
@@ -74,44 +70,41 @@
     outline: none;
     border-color: #2563eb;
     background: white;
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
-/* ---------------------------------------------------
-   DICTIONARY ACTIONS
---------------------------------------------------- */
 .dict-actions {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 .dict-actions textarea {
     width: 100%;
-    min-height: 120px;
-    padding: 0.75rem;
+    min-height: 140px;
+    padding: 0.9rem;
     border: 1px solid #d1d5db;
-    border-radius: 8px;
+    border-radius: 10px;
     font-family: monospace;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     background: #f9fafb;
-    box-sizing: border-box;
+    transition: all 0.2s ease;
 }
 
 .dict-actions textarea:focus {
     outline: none;
     border-color: #2563eb;
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 .delete-btn,
 .bulk-btn {
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
     border: none;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .delete-btn {
@@ -132,9 +125,6 @@
     background: #059669;
 }
 
-/* ---------------------------------------------------
-   MODAL OVERLAY + MODAL
---------------------------------------------------- */
 .admin-modal-overlay {
     position: fixed;
     inset: 0;
@@ -148,33 +138,42 @@
 .admin-modal {
     background: white;
     width: 92%;
-    max-width: 420px;
-    padding: 1.25rem;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    max-width: 450px;
+    padding: 1.5rem;
+    border-radius: 14px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.25);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 .admin-modal h2 {
-    margin-bottom: 0.5rem;
-    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+    font-size: 1.35rem;
     font-weight: 600;
 }
 
 .admin-modal input,
 .admin-modal textarea {
     width: 100%;
-    padding: 0.6rem;
+    padding: 0.75rem;
     border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    box-sizing: border-box;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    background: #f9fafb;
+    transition: all 0.2s ease;
+}
+
+.admin-modal input:focus,
+.admin-modal textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 .admin-modal textarea {
-    min-height: 120px;
+    min-height: 140px;
     font-family: monospace;
 }
 
@@ -182,20 +181,25 @@
     display: flex;
     justify-content: flex-end;
     gap: 0.75rem;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 }
 
 .btn-cancel,
 .btn-create {
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
+    padding: 0.7rem 1.1rem;
+    border-radius: 10px;
     cursor: pointer;
     font-weight: 600;
     border: none;
+    transition: all 0.2s ease;
 }
 
 .btn-cancel {
     background: #e5e7eb;
+}
+
+.btn-cancel:hover {
+    background: #d1d5db;
 }
 
 .btn-create {
@@ -203,9 +207,12 @@
     color: white;
 }
 
+.btn-create:hover {
+    background: #1d4ed8;
+}
+
 @media (max-width: 700px) {
     .admin-dictionary-panel {
         display: none !important;
     }
 }
-

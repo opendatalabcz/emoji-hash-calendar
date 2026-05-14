@@ -23,6 +23,10 @@ class CalendarService:
 
     @staticmethod
     def _build_mapping(dictionary_id, user_mapping):
+        """
+        Method builds final dictionary from a combination of chosen dictionary and user mapping.
+        User mappings extend or replace entries in dictionary
+        """
         if user_mapping is not None and not isinstance(user_mapping, dict):
             raise ValidationError("user_mapping must be a valid JSON object")
 

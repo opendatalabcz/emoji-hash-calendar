@@ -6,9 +6,9 @@ import {
     deleteDictionary,
     bulkInsertEntries
 } from "../../api/dictionary";
-import "./AdminPanel.css";
+import "./AdminDictionaryPanel.css";
 
-function AdminPanel({onRefresh}) {
+function AdminDictionaryPanel({onRefresh}) {
     const { token } = useContext(AuthContext);
 
     const [dictionaries, setDictionaries] = useState([]);
@@ -16,18 +16,7 @@ function AdminPanel({onRefresh}) {
     const [newDict, setNewDict] = useState({ name: "", language: "", description: "" });
     const [showCreate, setShowCreate] = useState(false);
     const [showCreateModal, setShowCreateModal] = useState(false);
-    const [bulkData, setBulkData] = useState(
-        JSON.stringify(
-            {
-                hello: "👋",
-                meeting: "📅",
-                gym: "🏋️",
-                lunch: "🍽️"
-            },
-            null,
-            2
-        )
-    );
+    const [bulkData, setBulkData] = useState(JSON.stringify());
 
     useEffect(() => {
         getDictionaries().then(setDictionaries).catch(console.error);
@@ -58,6 +47,7 @@ function AdminPanel({onRefresh}) {
     return (
         <div className="admin-dictionary-panel">
             <h3>Dictionary Management</h3>
+            <p>Create and manage dictionaries</p>
 
             <button
                 className="create-toggle-btn"
@@ -170,4 +160,4 @@ function AdminPanel({onRefresh}) {
     );
 }
 
-export default AdminPanel;
+export default AdminDictionaryPanel;

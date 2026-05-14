@@ -35,3 +35,50 @@ export async function signup(username, password, confirm_password) {
 
     return data;
 }
+
+export async function makeAdmin(id, token) {
+    const res = await fetch(`${API_URL}/api/users/${id}/admin`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+        const message =
+            data.error ||
+            data.message ||
+            (data.messages && JSON.stringify(data.messages)) ||
+            "Failed to grant admin role";
+
+        throw new Error(message);
+    }
+
+    return data;
+}
+
+export async function getUsers(token) {
+    const res = await fetch(`${API_URL}/api/users/`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+        const message =
+            data.error ||
+            data.message ||
+            (data.messages && JSON.stringify(data.messages)) ||
+            "Failed to fetch users";
+
+        throw new Error(message);
+    }
+
+    return data;
+}

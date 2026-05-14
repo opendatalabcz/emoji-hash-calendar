@@ -80,6 +80,7 @@ def get_dictionary(dictionary_id):
 def create_dictionary():
     """
     Create a new dictionary
+    Admins are able to create new dictionaries
     ---
     tags:
       - Dictionary
@@ -130,6 +131,7 @@ def create_dictionary():
 def delete_dictionary(dictionary_id):
     """
     Delete a dictionary
+    Admins are able to delete a dictionary
     ---
     tags:
       - Dictionary
@@ -167,6 +169,7 @@ def delete_dictionary(dictionary_id):
 def get_entries(dictionary_id):
     """
     Get all entries in a dictionary
+    Endpoint to view mappings inside dictionary
     ---
     tags:
       - Dictionary Entries
@@ -294,6 +297,7 @@ def delete_entry(dictionary_id, entry_id):
 def bulk_insert(dictionary_id):
     """
     Bulk insert entries into a dictionary
+    Insert multiple mappings at once into dictionary, takes input in the form of JSON, where each row is "word":"emoji"
     ---
     tags:
       - Dictionary Entries

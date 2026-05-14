@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useCallback } from "react";
-import { getToken, setToken as saveToken, logout as clearToken } from "./auth";
+import {getToken, setToken as saveToken, logout as clearToken, isLoggedIn} from "./auth";
 
 const API_URL = import.meta.env.VITE_API_URL;
 export const AuthContext = createContext();
@@ -76,7 +76,7 @@ export function AuthProvider({ children }) {
 
     return (
         <AuthContext.Provider value={{ token, user, login, logout, isLoggedIn: !!token, sessionExpired, setSessionExpired }}>
-            {sessionExpired && (
+            {sessionExpired && isLoggedIn (
                 <div className="session-expired-banner">
                     Your session has expired. Please{" "}
                     <button onClick={() => {

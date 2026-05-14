@@ -39,8 +39,9 @@ function Tester({ userMappings, method, dictionaryId }) {
 
     return (
         <div className="tester-column">
-            <form onSubmit={handleTesterSubmit} className="panel">
+            <form onSubmit={handleTesterSubmit} className="panel tester-panel">
                 <h3>Text → Emoji Tester</h3>
+                <p>Test how methods transform words or phrases to emojis.</p>
                 <input
                     placeholder="Type some text..."
                     value={testerInput}
