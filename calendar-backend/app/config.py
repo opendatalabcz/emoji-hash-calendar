@@ -6,7 +6,6 @@ class Config:
 
 class DevConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
-    #SQLALCHEMY_DATABASE_URI = "postgresql://postgres:example@db:5432/calendar_db"
 
 class TestConfig(Config):
     TESTING = True

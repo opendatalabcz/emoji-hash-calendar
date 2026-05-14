@@ -1,6 +1,6 @@
 services:
   backend:
-    build: ./calendar-project
+    build: ./calendar-backend
     env_file:
       - ./.env
     ports:
